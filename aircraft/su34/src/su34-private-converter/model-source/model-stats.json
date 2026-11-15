@@ -1,0 +1,438 @@
+{
+  "private_only": true,
+  "source_commit": "db0191619fb3d1cefc225eb5b216a91267ad7740",
+  "reader_meshes": 19,
+  "source_triangles": 35131,
+  "root_and_fragment_geometry": true,
+  "baked_GTA_payloads_removed": true,
+  "native_weapon_stations": [
+    [
+      7.4,
+      -0.26,
+      -4.05
+    ],
+    [
+      -7.4,
+      -0.26,
+      -4.05
+    ],
+    [
+      4.6,
+      -0.65,
+      -3.27
+    ],
+    [
+      -4.6,
+      -0.65,
+      -3.27
+    ],
+    [
+      3.47,
+      -0.65,
+      -2.83
+    ],
+    [
+      -3.47,
+      -0.65,
+      -2.83
+    ]
+  ],
+  "source_textures_loaded": false,
+  "scale_xyz": [
+    0.7709655425604447,
+    0.931253241830587,
+    0.9534545112958526
+  ],
+  "collider_spatial_cells": 61,
+  "collider_faces": 5234,
+  "nodes": {
+    "Source_prop_2_slow": {
+      "class": 99,
+      "faces": 888,
+      "states": 1
+    },
+    "Source_prop_1_slow": {
+      "class": 99,
+      "faces": 888,
+      "states": 1
+    },
+    "Source_steeringwheel": {
+      "class": 99,
+      "faces": 2362,
+      "states": 1
+    },
+    "Source_dials": {
+      "class": 99,
+      "faces": 3332,
+      "states": 1
+    },
+    "Source_chassis": {
+      "class": 99,
+      "faces": 25032,
+      "states": 1
+    },
+    "Source_rudder": {
+      "class": 248,
+      "faces": 232,
+      "states": 41
+    },
+    "Source_rudder_2": {
+      "class": 249,
+      "faces": 232,
+      "states": 41
+    },
+    "Source_elevator_l": {
+      "class": 246,
+      "faces": 142,
+      "states": 41
+    },
+    "Source_elevator_r": {
+      "class": 247,
+      "faces": 142,
+      "states": 41
+    },
+    "Source_gear_door_rl2": {
+      "class": 242,
+      "faces": 34,
+      "states": 41
+    },
+    "Source_airbrake_l": {
+      "class": 244,
+      "faces": 34,
+      "states": 41
+    },
+    "Source_gear_door_rr2": {
+      "class": 243,
+      "faces": 34,
+      "states": 41
+    },
+    "Source_airbrake_r": {
+      "class": 245,
+      "faces": 34,
+      "states": 41
+    },
+    "Source_aileron_l": {
+      "class": 250,
+      "faces": 58,
+      "states": 41
+    },
+    "Source_aileron_r": {
+      "class": 251,
+      "faces": 58,
+      "states": 41
+    },
+    "Source_break_extra_2": {
+      "class": 99,
+      "faces": 10,
+      "states": 1
+    },
+    "Source_windscreen": {
+      "class": 99,
+      "faces": 148,
+      "states": 1
+    },
+    "OuterAileron240": {
+      "class": 240,
+      "faces": 18,
+      "states": 41
+    },
+    "OuterAileron241": {
+      "class": 241,
+      "faces": 18,
+      "states": 41
+    },
+    "GearN": {
+      "class": 210,
+      "faces": 1084,
+      "states": 101
+    },
+    "NoseUpperTrunnion": {
+      "class": 210,
+      "faces": 36,
+      "states": 101
+    },
+    "WheelsN": {
+      "class": 210,
+      "faces": 7752,
+      "states": 101
+    },
+    "LandingLamp39": {
+      "class": 210,
+      "faces": 64,
+      "states": 101
+    },
+    "LandingLamp40": {
+      "class": 210,
+      "faces": 64,
+      "states": 101
+    },
+    "GearL": {
+      "class": 210,
+      "faces": 40,
+      "states": 101
+    },
+    "GearLowerL": {
+      "class": 210,
+      "faces": 156,
+      "states": 101
+    },
+    "WheelsL": {
+      "class": 210,
+      "faces": 6616,
+      "states": 101
+    },
+    "MainUpperTrunnionL": {
+      "class": 210,
+      "faces": 36,
+      "states": 101
+    },
+    "MainDragBraceL0": {
+      "class": 210,
+      "faces": 30,
+      "states": 101
+    },
+    "MainDragBraceL1": {
+      "class": 210,
+      "faces": 30,
+      "states": 101
+    },
+    "GearR": {
+      "class": 210,
+      "faces": 40,
+      "states": 101
+    },
+    "GearLowerR": {
+      "class": 210,
+      "faces": 156,
+      "states": 101
+    },
+    "WheelsR": {
+      "class": 210,
+      "faces": 6616,
+      "states": 101
+    },
+    "MainUpperTrunnionR": {
+      "class": 210,
+      "faces": 36,
+      "states": 101
+    },
+    "MainDragBraceR0": {
+      "class": 210,
+      "faces": 30,
+      "states": 101
+    },
+    "MainDragBraceR1": {
+      "class": 210,
+      "faces": 30,
+      "states": 101
+    },
+    "FlushDoorN0": {
+      "class": 210,
+      "faces": 5308,
+      "states": 101
+    },
+    "FlushDoorN1": {
+      "class": 210,
+      "faces": 4654,
+      "states": 101
+    },
+    "InternalWellN": {
+      "class": 99,
+      "faces": 1758,
+      "states": 1
+    },
+    "FlushDoorL0": {
+      "class": 210,
+      "faces": 75698,
+      "states": 101
+    },
+    "InternalWellL": {
+      "class": 99,
+      "faces": 1624,
+      "states": 1
+    },
+    "FlushDoorR0": {
+      "class": 210,
+      "faces": 100016,
+      "states": 101
+    },
+    "InternalWellR": {
+      "class": 99,
+      "faces": 1644,
+      "states": 1
+    },
+    "SourceAirframe": {
+      "class": 99,
+      "faces": 10446,
+      "states": 1
+    },
+    "FixedNozzle0": {
+      "class": 99,
+      "faces": 48,
+      "states": 1
+    },
+    "Afterburner0": {
+      "class": 110,
+      "faces": 48,
+      "states": 2
+    },
+    "FixedNozzle1": {
+      "class": 99,
+      "faces": 48,
+      "states": 1
+    },
+    "Afterburner1": {
+      "class": 111,
+      "faces": 48,
+      "states": 2
+    },
+    "OwnTipLaunchers": {
+      "class": 99,
+      "faces": 36,
+      "states": 1
+    },
+    "OwnWingStars": {
+      "class": 99,
+      "faces": 20,
+      "states": 1
+    },
+    "OwnCockpitLiner": {
+      "class": 99,
+      "faces": 150,
+      "states": 1
+    }
+  },
+  "removed_duplicate_faces": 10,
+  "rig": {
+    "N": {
+      "fit_error_m": 0.0,
+      "root": [
+        -0.0008488906845477754,
+        0.3,
+        4.142518555495401
+      ],
+      "axle_down": [
+        0.028545314835472884,
+        -2.228846595465484,
+        3.8600646838477553
+      ],
+      "stowed_target": [
+        0.0,
+        0.5337696096296569,
+        1.6085374266543688
+      ],
+      "compression": 0.0,
+      "optimizer": 3.4225000000000005e-05,
+      "corner_adjustments_m": {
+        "upper": 0.0,
+        "tyres": 0.0
+      },
+      "rect": [
+        -0.41,
+        0.41,
+        1.28,
+        4.3
+      ]
+    },
+    "L": {
+      "nested_lower_fork_swivel": true,
+      "fork_pivot": [
+        1.8865674082331454,
+        -1.1183210240242345,
+        -2.554932636612121
+      ],
+      "fork_axis": [
+        6.244202507505822e-05,
+        0.9966766238325756,
+        0.08145982817740116
+      ],
+      "root": [
+        1.906750021742594,
+        0.1765301656477482,
+        -2.3090042758006053
+      ],
+      "parameters_rx_ry_rz_swivel_compression_hingeY": [
+        -87.7393070462165,
+        0.8628984641895391,
+        -24.392672545639297,
+        -91.28494830076885,
+        0.07909867819898578,
+        0.1765301656477482
+      ],
+      "fit_error_m": 0.0,
+      "corner_adjustments_m": {
+        "upper": 0.0,
+        "lower": 0.0,
+        "wheels": 0.0
+      },
+      "cost": 6.0250889244522074e-05,
+      "source_upper_cylinder_and_whole_lower_fork": true,
+      "rect": [
+        0.85,
+        2.38,
+        -3.25,
+        0.65
+      ],
+      "storage_rect": [
+        0.2,
+        2.75,
+        -3.95,
+        1.05
+      ]
+    },
+    "R": {
+      "nested_lower_fork_swivel": true,
+      "fork_pivot": [
+        -1.8530133843778307,
+        -1.1178532252661013,
+        -2.5547272606430234
+      ],
+      "fork_axis": [
+        0.004735922047179522,
+        0.9968763795207874,
+        0.07883562009581033
+      ],
+      "root": [
+        -1.8494361785009972,
+        0.17365336298016174,
+        -2.3090042758006053
+      ],
+      "parameters_rx_ry_rz_swivel_compression_hingeY": [
+        -87.52885675288101,
+        -1.5277580869820044,
+        24.81438725707323,
+        90.60222032131132,
+        0.0594964228533187,
+        0.17365336298016174
+      ],
+      "fit_error_m": 0.0023191950682968504,
+      "corner_adjustments_m": {
+        "upper": 0.0,
+        "lower": 0.0,
+        "wheels": 0.0
+      },
+      "cost": 6.846343181187437e-05,
+      "source_upper_cylinder_and_whole_lower_fork": true,
+      "rect": [
+        -2.38,
+        -0.85,
+        -3.25,
+        0.65
+      ],
+      "storage_rect": [
+        -2.75,
+        -0.2,
+        -3.95,
+        1.05
+      ]
+    },
+    "validation": "NOT YET VALIDATED; fit diagnostics must pass before handoff"
+  },
+  "generated_sha256": {
+    "su34_coarse.dnm": "249b91607922255a9038fc4aeee48dbc2c5609829ab822bbbbb76b1d10c8e1e1",
+    "su34cockpit.srf": "7e48641bb4e6ab1ddbf6ec1be2628d88ec04a55f89a7d0e92a22dc684f7b2912",
+    "su34coll.srf": "47b4166ab50b687ffc5e3761598d1a859c220a0f09281b9becf9f60ad5f2523d",
+    "su34.dat": "0bfde250987d4ddf4a1fdac12dbf6f290f49cf454da536cc206af0d6700242c0",
+    "su34.dnm": "249b91607922255a9038fc4aeee48dbc2c5609829ab822bbbbb76b1d10c8e1e1"
+  }
+}
