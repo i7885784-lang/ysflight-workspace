@@ -1,10 +1,6 @@
 __pycache__/
 *.pyc
-work/
+**/work/tmp/
 artifacts/
 *.zip
-*.mp4
-*.png
-*.jpg
-*.pdf
 *.exe
