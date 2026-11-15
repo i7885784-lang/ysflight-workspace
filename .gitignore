@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+work/
+artifacts/
+*.zip
+*.mp4
+*.png
+*.jpg
+*.pdf
+*.exe
