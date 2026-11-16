@@ -2,7 +2,7 @@ from pathlib import Path
 import hashlib,urllib.request,zipfile,struct,subprocess,sys
 ROOT=Path(__file__).resolve().parent
 BASE={32:('x86','4a30f79a697f558979e3f1b1f8d23ede083c0c0769ff79e54d58bd10912637a4'),64:('x64','62f5d07fe623880dbb89862bec7e77e00643efd13bcca0b100b361ff03d69d52')}
-MODEL='4a178be938fe7c0f51c996af4205871c80742f7930b92dd62e76ea7370dfebe9'
+MODEL='e60bef484705795468dc12666ab23f0d99d7478f3003a4029704236e03a31398'
 def sha(b):return hashlib.sha256(b).hexdigest()
 def pe(b,bits):
  o=struct.unpack_from('<I',b,0x3c)[0];assert b[o:o+4]==b'PE\0\0';assert struct.unpack_from('<H',b,o+4)[0]==(0x14c if bits==32 else 0x8664);assert struct.unpack_from('<H',b,o+24)[0]==(0x10b if bits==32 else 0x20b)
