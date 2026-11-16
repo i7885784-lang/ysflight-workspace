@@ -20,6 +20,13 @@ FCL:41положение, две Wheel-створки против6фиксир�
 ## Воспроизведение и доставка
 Код aircraft/su34/src/wheel-door-fit/: nose_fix.py сохраняет предыдущую правку из исходной VectorNozzles-модели; fit.py выполняет эту подгонку; fix.py запускает обе стадии. Точность overlay —1мкм, порядок полигонов канонизирован. Проверенная среда генерации — Linux, numpy2.3.5/scipy1.17.0/shapely2.1.2. Windows GEOS даёт неидентичный двоичный результат на пограничных случаях; поэтому обе Windows-сборки получают один и тот же просмотренный Linux-файл через авторизованный черновик, со строгим SHA перед запуском. Открытые Actions-артефакты с моделью не создаются.
 
-SHA256 итоговой модели: ae7659092f75d61393c72462ffd9b6f716e58a6ae8953cd8d76f16e4a0acbfa4. Главная и coarse-модель одинаковы. Нативные Windows x86/x64, G-цикл, PE/CRC/SHA и повторное скачивание ZIP проверяются workflow .github/workflows/su34-wheel-door-fit.yml; точный итог и ссылки в STATUS.json. x64 имеет телеметрию gear; x86 — запуск/ввод/обзорные изображения без точного измерения крайних положений.
+SHA256 итоговой модели: ae7659092f75d61393c72462ffd9b6f716e58a6ae8953cd8d76f16e4a0acbfa4. Главная и coarse-модель одинаковы. Workflow43912026819 завершён успешно: prepare, Windows x86/x64 и package. В x64 телеметрия подтвердила gear1→0→1 и active1; обе тройки нативных кадров открыты. PE32/PE32+, разные EXE, CRC ZIP, неизменность прочих игровых файлов, SHA и авторизованное повторное скачивание всех7активов проверены. Анонимный доступ к каждому активу404. Временный приватный DNM для передачи между задачами удалён; остались только финальные7активов. Точные ссылки в STATUS.json. x64 имеет телеметрию gear; x86 — запуск/ввод/обзорные изображения без точного измерения крайних положений.
 
 По aircraft/su34/PROJECT.md права модели на открытое распространение не подтверждены: полные игры и модель только в авторизованном DRAFT GitHub Releases. Публичны лишь код исправления, протоколы и снимки. Для ZIP нужен вход владельца в GitHub. Запуск через runtime/Play_Su34_Current.bat. Исходная модель E60 и старый черновик447120738 сохранены для отката.
+
+
+## Сборки
+- [Su34_WheelDoorFit_Windows_x64.zip](https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-32a5d6bc007a23089ba0/Su34_WheelDoorFit_Windows_x64.zip) — 123227864 байт; sha256:4fb97bc7f45a30c4328846a9275ed0858ea5718782f6379b6c7abb5d50ad3a4f
+- [Su34_WheelDoorFit_Windows_x86.zip](https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-32a5d6bc007a23089ba0/Su34_WheelDoorFit_Windows_x86.zip) — 123052890 байт; sha256:8bf7d10849dfea897e83b6b997a18da72511d610569f9c121ca1ead800ce0aea
+
+[Черновик](https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-32a5d6bc007a23089ba0).

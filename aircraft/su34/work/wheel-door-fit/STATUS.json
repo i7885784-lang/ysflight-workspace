@@ -1,0 +1,91 @@
+{
+  "completed": true,
+  "model_sha256": "ae7659092f75d61393c72462ffd9b6f716e58a6ae8953cd8d76f16e4a0acbfa4",
+  "workflow_run": 43912026819,
+  "scope": "Only the two main Wheel-door overhangs and adjoining wheel-side static surround",
+  "changed_meshes": [
+    "OriginalSideDoorLWheel",
+    "OriginalSideDoorRWheel",
+    "ConformalWingRootBaySides",
+    "MainBaySeals",
+    "InternalSeamSeatMain"
+  ],
+  "checks": {
+    "nodes_parent_transforms_axes_animation_exact": true,
+    "all_other_meshes_exact": true,
+    "fully_rear_surround_faces_preserved": true,
+    "door_thickness_palette_preserved": true,
+    "door_welded_edges_two_faces": true,
+    "door_degenerate_faces": 0,
+    "local_game_images_opened": true,
+    "both_sides_closed_open_intermediate_reviewed": true,
+    "matching_before_after": true,
+    "native_windows32_launch_keys_images": true,
+    "native_windows32_gear_telemetry_available": false,
+    "native_windows64_gear_min": 0,
+    "native_windows64_gear_last": 1,
+    "native_windows64_last_active": 1,
+    "native_images_opened": true,
+    "pe_x86_and_x64_verified_distinct": true,
+    "same_canonical_model_both_architectures": true,
+    "all_other_game_entries_exact": true,
+    "all_uploaded_assets_authenticated_redownload_sha_verified": true,
+    "anonymous_asset_access_404": true,
+    "temporary_private_model_transfer_asset_removed": true
+  },
+  "limitations": [
+    "41-pose mesh sweep: baseline10/candidate23 contact pairs,13 new early contacts at gear.025–.1 with hidden fixed surround; no global intersection-free assertion. Game collisionSRF unchanged.",
+    "x86 native overview images and key input do not measure gear endpoints; x64 telemetry does.",
+    "General audit of other parts and physics outside scope.",
+    "Authenticated draft download required by aircraft/su34/PROJECT.md."
+  ],
+  "release": {
+    "id": 447319917,
+    "draft": true,
+    "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-32a5d6bc007a23089ba0",
+    "assets": [
+      {
+        "name": "native-32.json",
+        "bytes": 346,
+        "sha256": "ecaab9a4aa619ff2db318705e7fa215a38c08d8e4fe1408f144db140d11c6da8",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-32a5d6bc007a23089ba0/native-32.json"
+      },
+      {
+        "name": "native-64.json",
+        "bytes": 63757,
+        "sha256": "ae98fbebc605309711cad802fe938ae8d1421508918c32223cf68c4c75def4f0",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-32a5d6bc007a23089ba0/native-64.json"
+      },
+      {
+        "name": "packages.json",
+        "bytes": 782,
+        "sha256": "2a87dbde129b9dd1fa5d7a023d63a981597572723256032f063b8e3eec2fcff6",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-32a5d6bc007a23089ba0/packages.json"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "bytes": 551,
+        "sha256": "dba8a38fbdbacc9f35827e555bbb4396d81d211aba9fa87cd28543c9f9492795",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-32a5d6bc007a23089ba0/SHA256SUMS.txt"
+      },
+      {
+        "name": "Su34_WheelDoorFit_CorrespondingSources.zip",
+        "bytes": 43387326,
+        "sha256": "55286a348f12e95b722cbcfd02a8ef9c20dfc62645dbf48938e8cb5f897ac651",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-32a5d6bc007a23089ba0/Su34_WheelDoorFit_CorrespondingSources.zip"
+      },
+      {
+        "name": "Su34_WheelDoorFit_Windows_x64.zip",
+        "bytes": 123227864,
+        "sha256": "4fb97bc7f45a30c4328846a9275ed0858ea5718782f6379b6c7abb5d50ad3a4f",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-32a5d6bc007a23089ba0/Su34_WheelDoorFit_Windows_x64.zip"
+      },
+      {
+        "name": "Su34_WheelDoorFit_Windows_x86.zip",
+        "bytes": 123052890,
+        "sha256": "8bf7d10849dfea897e83b6b997a18da72511d610569f9c121ca1ead800ce0aea",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-32a5d6bc007a23089ba0/Su34_WheelDoorFit_Windows_x86.zip"
+      }
+    ]
+  }
+}
