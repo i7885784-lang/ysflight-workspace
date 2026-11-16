@@ -45,3 +45,5 @@ jobs:
 # Canonical binary model output; CRLF-only mismatch corrected.
 
 # Quantized vertices before normals: identical stored geometry across platforms.
+
+# Fixed micrometer overlay grid; normalize polygon ordering before triangulation.
