@@ -2,13 +2,15 @@
 from pathlib import Path
 import argparse,hashlib,json,collections,numpy as np
 from shapely.geometry import Polygon,box
-from shapely import union_all,constrained_delaunay_triangles
+from shapely import union_all,constrained_delaunay_triangles,set_precision,normalize
 import dnm
 from mesh import pack_dnm,Mesh
 ap=argparse.ArgumentParser();ap.add_argument('--baseline',required=True);ap.add_argument('--output',required=True);ap.add_argument('--report',required=True);a=ap.parse_args();src=Path(a.baseline);assert hashlib.sha256(src.read_bytes()).hexdigest()=='e60bef484705795468dc12666ab23f0d99d7478f3003a4029704236e03a31398'
 p,ns=dnm.read(src);nodes={dnm.name(n):n for n in ns};ref='\n'.join(p[dnm.fil(nodes['SourceAirframe'])]).encode();body=dnm.mesh(ref.decode().splitlines());v=np.array(body.v);tri=np.array([[ids[0],ids[j],ids[j+1]] for ids,c,b in body.f for j in range(1,len(ids)-1)]);t=v[tri];aa=t[:,0];ab=t[:,1]-aa;ac=t[:,2]-aa;det=ab[:,0]*ac[:,2]-ab[:,2]*ac[:,0];ok=np.abs(det)>1e-12;t,aa,ab,ac,det=[q[ok] for q in [t,aa,ab,ac,det]]
-raw_footprint=union_all([Polygon(q[:,[0,2]]) for q in t]);footprint=raw_footprint;mask=footprint.buffer(-.008,join_style='mitre');report={}
-def components(poly):return poly.geoms if hasattr(poly,'geoms') else [poly]
+GRID=1e-6
+def snap(g):return normalize(set_precision(g,GRID))
+raw_footprint=union_all([snap(Polygon(q[:,[0,2]])) for q in t],grid_size=GRID);footprint=snap(raw_footprint);mask=snap(footprint.buffer(-.008,join_style='mitre'));report={}
+def components(poly):return sorted([normalize(q) for q in (poly.geoms if hasattr(poly,'geoms') else [poly])],key=lambda q:q.wkb_hex)
 def floor(z):return -.245+.095*np.clip((-z-.8)/.8,0,1)
 def top(xz):
  dx,dz=(xz-aa[:,[0,2]]).T;u=(dx*ac[:,2]-dz*ac[:,0])/det;w=(ab[:,0]*dz-ab[:,2]*dx)/det;hit=(u>=-1e-6)&(w>=-1e-6)&(u+w<=1.000001);assert hit.any(),xz
@@ -19,7 +21,7 @@ for name in ['OriginalSideDoorLWheel','OriginalSideDoorRWheel']:
   if c!=(138,169,181):continue
   q=np.array(old.v)[ids];poly=Polygon(q[:,[0,2]]);before.append(poly)
   origin=q[0];u=q[1]-origin;w=q[2]-origin;den=u[0]*w[2]-u[2]*w[0];assert abs(den)>1e-12
-  for clipped in components(poly.intersection(mask)):
+  for clipped in components(poly.intersection(mask,grid_size=GRID)):
    if clipped.area<1e-10:continue
    assert not clipped.interiors,'Unexpected hole in door polygon'
    for piece in constrained_delaunay_triangles(clipped).geoms:
@@ -41,8 +43,8 @@ for name,n in nodes.items():
  old=dnm.mesh(p[dnm.fil(n)])
  for ids,c,b in old.f:
   poly=Polygon(np.array(old.v)[ids][:,[0,2]])
-  if poly.area>1e-12:parts.append(poly)
-opening=union_all(parts).buffer(.005,join_style='mitre');affected=box(-10,-1.45,10,10)
+  if poly.area>1e-12:parts.append(snap(poly))
+opening=snap(union_all(parts,grid_size=GRID).buffer(.005,join_style='mitre'));affected=box(-10,-1.45,10,10)
 def keep_rear(old):
  m=Mesh()
  for ids,c,b in old.f:
@@ -66,15 +68,15 @@ for poly in components(opening):
     q=np.round([(x[0],floor(x[1]),x[1]),(z[0],floor(z[1]),z[1]),(z[0],max(floor(z[1])+.001,top(z)),z[1]),(x[0],max(floor(x[1])+.001,top(x)),x[1])],6);wall.face(q,(128,157,175));wall.face(q[::-1],(128,157,175))
 p[dnm.fil(nodes[wallname])]=wall.srf();sealname='MainBaySeals';seal=keep_rear(dnm.mesh(p[dnm.fil(nodes[sealname])]))
 region=opening.buffer(.016,join_style='mitre').difference(opening).intersection(affected).intersection(footprint.buffer(-.001,join_style='mitre'))
-for poly in components(region):
+for poly in components(snap(region)):
  for tri in constrained_delaunay_triangles(poly).geoms:
   q=np.array(tri.exterior.coords)[:-1];q=np.round(np.c_[q[:,0],floor(q[:,1])+.016,q[:,1]],6);seal.face(q,(92,117,132));seal.face(q[::-1],(92,117,132))
 p[dnm.fil(nodes[sealname])]=seal.srf()
 # Fit the existing stepped overlap seat as well; its 45mm outer border was exposed.
 seatname='InternalSeamSeatMain';seat=keep_rear(dnm.mesh(p[dnm.fil(nodes[seatname])]))
-foot=opening.buffer(-.005,join_style='mitre')
+foot=snap(opening.buffer(-.005,join_style='mitre'))
 region=foot.buffer(.045,join_style='mitre').difference(foot.buffer(-.010,join_style='mitre')).intersection(affected).intersection(footprint.buffer(-.003,join_style='mitre'))
-for poly in components(region):
+for poly in components(snap(region)):
  for tr in constrained_delaunay_triangles(poly).geoms:
   xz=np.array(tr.exterior.coords)[:-1];cap=np.array([top(q) for q in xz]);low=np.minimum(floor(xz[:,1])+.010,cap-.001);high=np.minimum(low+.18,cap);q=np.round(np.c_[xz[:,0],low,xz[:,1]],6);r=np.round(np.c_[xz[:,0],high,xz[:,1]],6)
   for f in [q,q[::-1],r,r[::-1]]:seat.face(f,(112,139,153))
