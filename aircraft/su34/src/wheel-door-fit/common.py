@@ -16,7 +16,7 @@ def baseline(bits,work):
 def generate(path,work):
  if sys.platform=='win32':
   import os,json
-  repo=os.environ['GITHUB_REPOSITORY'];releases=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/releases'],text=True));release=next(x for x in releases if x['tag_name']=='su34-wheel-door-fit-20261116');assert release['draft'];asset=next(x for x in release['assets'] if x['name']=='Su34_WheelDoorFit_Model.dnm')
+  repo=os.environ['GITHUB_REPOSITORY'];releases=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/releases'],text=True,encoding='utf-8'));release=next(x for x in releases if x['tag_name']=='su34-wheel-door-fit-20261116');assert release['draft'];asset=next(x for x in release['assets'] if x['name']=='Su34_WheelDoorFit_Model.dnm')
   out=work/'su34.dnm'
   with out.open('wb') as f:subprocess.run(['gh','api',f'repos/{repo}/releases/assets/{asset["id"]}','-H','Accept: application/octet-stream'],stdout=f,check=True)
   b=out.read_bytes();assert sha(b)==MODEL;return b
