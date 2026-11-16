@@ -11,6 +11,6 @@
 Ссылки на фото/видео и SHA:
 Что осталось неисправным или не проверено:
 Как откатить:
-Статус: candidate / accepted / integrated / rejected
-accepted_by_owner: no
+Статус в общем журнале: accepted
+accepted_by_owner: yes
 Дата и ссылка на подтверждение владельца:
