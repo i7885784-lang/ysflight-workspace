@@ -1,0 +1,201 @@
+{
+  "nodes_and_animations_exact": true,
+  "changed_meshes": [
+    "FlushDoorN0.srf",
+    "FlushDoorN1.srf"
+  ],
+  "face_indices_colors_brightness_exact": true,
+  "y_z_vertices_exact": true,
+  "max_shift_x_mm": 15,
+  "poses": 201,
+  "baseline_contact_pairs": 742,
+  "candidate_contact_pairs": 779,
+  "added": [
+    {
+      "g": 0.015,
+      "moving": "FlushDoorN1",
+      "fixed": "InternalSeamSeatNose"
+    },
+    {
+      "g": 0.02,
+      "moving": "FlushDoorN1",
+      "fixed": "InternalSeamSeatNose"
+    },
+    {
+      "g": 0.025,
+      "moving": "FlushDoorN1",
+      "fixed": "InternalSeamSeatNose"
+    },
+    {
+      "g": 0.03,
+      "moving": "FlushDoorN1",
+      "fixed": "InternalSeamSeatNose"
+    },
+    {
+      "g": 0.035,
+      "moving": "FlushDoorN1",
+      "fixed": "InternalSeamSeatNose"
+    },
+    {
+      "g": 0.04,
+      "moving": "FlushDoorN1",
+      "fixed": "InternalSeamSeatNose"
+    },
+    {
+      "g": 0.045,
+      "moving": "FlushDoorN1",
+      "fixed": "InternalSeamSeatNose"
+    },
+    {
+      "g": 0.05,
+      "moving": "FlushDoorN1",
+      "fixed": "InternalSeamSeatNose"
+    },
+    {
+      "g": 0.055,
+      "moving": "FlushDoorN1",
+      "fixed": "InternalSeamSeatNose"
+    },
+    {
+      "g": 0.06,
+      "moving": "FlushDoorN1",
+      "fixed": "InternalSeamSeatNose"
+    },
+    {
+      "g": 0.065,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.065,
+      "moving": "FlushDoorN1",
+      "fixed": "InternalSeamSeatNose"
+    },
+    {
+      "g": 0.07,
+      "moving": "FlushDoorN0",
+      "fixed": "SourceAirframe"
+    },
+    {
+      "g": 0.07,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.07,
+      "moving": "FlushDoorN1",
+      "fixed": "InternalSeamSeatNose"
+    },
+    {
+      "g": 0.075,
+      "moving": "FlushDoorN0",
+      "fixed": "SourceAirframe"
+    },
+    {
+      "g": 0.075,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.08,
+      "moving": "FlushDoorN0",
+      "fixed": "SourceAirframe"
+    },
+    {
+      "g": 0.08,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.085,
+      "moving": "FlushDoorN0",
+      "fixed": "SourceAirframe"
+    },
+    {
+      "g": 0.085,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.09,
+      "moving": "FlushDoorN0",
+      "fixed": "SourceAirframe"
+    },
+    {
+      "g": 0.09,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.095,
+      "moving": "FlushDoorN0",
+      "fixed": "SourceAirframe"
+    },
+    {
+      "g": 0.095,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.1,
+      "moving": "FlushDoorN0",
+      "fixed": "SourceAirframe"
+    },
+    {
+      "g": 0.1,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.105,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.11,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.115,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.12,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.125,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.13,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.135,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.14,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.145,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    },
+    {
+      "g": 0.15,
+      "moving": "FlushDoorN1",
+      "fixed": "RecessedNoseBaySeal"
+    }
+  ],
+  "removed": []
+}
