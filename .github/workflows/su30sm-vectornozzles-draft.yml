@@ -1,0 +1,59 @@
+name: Copy requested Su30SM VectorNozzles archives to draft
+on:
+  push:
+    branches: [task/su30sm-vectornozzles-draft]
+    paths: [.github/workflows/su30sm-vectornozzles-draft.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  transfer:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - name: Transfer exact historical files; do not rebuild or publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEST_REPO: i7885784-lang/ysflight-workspace
+          DEST_SHA: ${{ github.sha }}
+        shell: python
+        run: |
+          import os,json,hashlib,urllib.request,subprocess,zipfile,struct
+          from pathlib import Path
+          assets=json.loads("[{\"name\":\"packages.json\",\"url\":\"https://github.com/i7885784-lang/igraYS-Flight-Simulator/releases/download/su30sm-nozzle-vectoring-20261115/packages.json\",\"sha256\":\"0a32a310ad052ff6411ef5b55f9be1d5e25c4e75c2771dc2891db8497ea9fd41\"},{\"name\":\"SHA256SUMS.txt\",\"url\":\"https://github.com/i7885784-lang/igraYS-Flight-Simulator/releases/download/su30sm-nozzle-vectoring-20261115/SHA256SUMS.txt\",\"sha256\":\"28b6160c99468a4396428a80fae07ae57cd307ef0ec484ad636e3b4429a83232\"},{\"name\":\"Su30SM_VectorNozzles_FullSources.zip\",\"url\":\"https://github.com/i7885784-lang/igraYS-Flight-Simulator/releases/download/su30sm-nozzle-vectoring-20261115/Su30SM_VectorNozzles_FullSources.zip\",\"sha256\":\"87f5f71df79754f8f8586fba358f89319e9b8958e6e88d708fe48b0994c06dfb\"},{\"name\":\"Su30SM_VectorNozzles_Windows_x64.zip\",\"url\":\"https://github.com/i7885784-lang/igraYS-Flight-Simulator/releases/download/su30sm-nozzle-vectoring-20261115/Su30SM_VectorNozzles_Windows_x64.zip\",\"sha256\":\"62f5d07fe623880dbb89862bec7e77e00643efd13bcca0b100b361ff03d69d52\"},{\"name\":\"Su30SM_VectorNozzles_Windows_x86.zip\",\"url\":\"https://github.com/i7885784-lang/igraYS-Flight-Simulator/releases/download/su30sm-nozzle-vectoring-20261115/Su30SM_VectorNozzles_Windows_x86.zip\",\"sha256\":\"4a30f79a697f558979e3f1b1f8d23ede083c0c0769ff79e54d58bd10912637a4\"}]")
+          folder=Path('archives');folder.mkdir()
+          for item in assets:
+              p=folder/item['name']
+              with urllib.request.urlopen(item['url'],timeout=120) as src,p.open('wb') as dst:
+                  while True:
+                      b=src.read(1024*1024)
+                      if not b:break
+                      dst.write(b)
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256'],p.name
+              if p.suffix=='.zip':
+                  with zipfile.ZipFile(p) as z:
+                      assert z.testzip() is None
+                      if 'Windows_' in p.name:
+                          bits=32 if 'x86' in p.name else 64
+                          exe=z.read(f'runtime/ysflight{bits}_gl1.exe')
+                          off=struct.unpack_from('<I',exe,0x3c)[0]
+                          assert exe[off:off+4]==b'PE\0\0'
+                          assert struct.unpack_from('<H',exe,off+4)[0]==(0x14c if bits==32 else 0x8664)
+                          assert struct.unpack_from('<H',exe,off+24)[0]==(0x10b if bits==32 else 0x20b)
+          repo=os.environ['DEST_REPO'];tag='su30sm-vectornozzles-before-cobra-20261115'
+          payload=dict(tag_name=tag,target_commitish=os.environ['DEST_SHA'],name='Су-30СМ: версия перед первой попыткой кобры — VectorNozzles',draft=True,body='Точный перенос по просьбе владельца из igraYS-Flight-Simulator, su30sm-nozzle-vectoring-20261115. Версия с отклонением и изменением раскрытия сопел, до режима Ctrl+L и последующих правок управления. Две настоящие архитектуры x86/x64; ZIP и SHA проверены. Пересборки и нового игрового тестирования не проводилось. Приложены соответствующие исходники и исходные контрольные суммы. Этот черновик не означает включения исторического движка в общую игру.')
+          result=subprocess.run(['gh','api','--method','POST',f'repos/{repo}/releases','--input','-'],input=json.dumps(payload),text=True,capture_output=True,check=True)
+          release=json.loads(result.stdout)
+          for item in assets:
+              subprocess.run(['gh','release','upload',tag,str(folder/item['name']),'--repo',repo],check=True)
+          info=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/releases/{release["id"]}'],text=True))
+          assert info['draft'] is True
+          uploaded={x['name']:x for x in info['assets']}
+          for item in assets:
+              asset=uploaded[item['name']]
+              p=Path('verify-'+item['name'])
+              with p.open('wb') as f:
+                  subprocess.run(['gh','api',f'repos/{repo}/releases/assets/{asset["id"]}','-H','Accept: application/octet-stream'],stdout=f,check=True)
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==item['sha256']
+              p.unlink()
+          print(json.dumps(dict(release_id=info['id'],draft=True,url=info['html_url'],assets=[dict(name=x['name'],url=x['browser_download_url'],size=x['size']) for x in info['assets']]),ensure_ascii=False))
