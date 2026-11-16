@@ -41,3 +41,5 @@ jobs:
       - run: python -m pip install numpy scipy Pillow
       - name: Keep model and full games only in authenticated draft; check anonymous404
         run: python aircraft/su34/src/nose-seam/package.py
+
+# Canonical binary model output; CRLF-only mismatch corrected.
