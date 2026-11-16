@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "bits": 32,
+  "native_windows": true,
+  "model_sha256": "ae7659092f75d61393c72462ffd9b6f716e58a6ae8953cd8d76f16e4a0acbfa4",
+  "exe_sha256": "e649db35440467ae336ea104417ffed11dd3e5f2b4bc97e6a2e5981aa4e69872",
+  "scope": "Actual G retraction and extension, images; x64 gear telemetry, x86 launch/keys/images",
+  "states": []
+}
