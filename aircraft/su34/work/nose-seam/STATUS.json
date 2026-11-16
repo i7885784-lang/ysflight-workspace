@@ -1,0 +1,62 @@
+{
+  "completed": true,
+  "release_id": 446957072,
+  "draft": true,
+  "release_url": "https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-17a9932a369739bc700f",
+  "model_sha256": "a61e6b783ab8a993009c1147f957be3facf547ab90118914fd76b1ce7fbfcd2e",
+  "workflow_run": 43858695801,
+  "all_nodes_and_animations_preserved": true,
+  "changed_meshes": [
+    "FlushDoorN0.srf",
+    "FlushDoorN1.srf"
+  ],
+  "geometry_collision_limitation": "37 added internal trim contact pairs in201 tested positions; no new visible artifacts in inspected intermediate views; not a globally intersection-free niche",
+  "assets": [
+    {
+      "name": "native-32.json",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-17a9932a369739bc700f/native-32.json",
+      "sha256": "sha256:ee233edf647d3f1ae838cd8e78bf0b2dcd592106743d1f109be8dcf267621d07",
+      "size": 346
+    },
+    {
+      "name": "native-64.json",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-17a9932a369739bc700f/native-64.json",
+      "sha256": "sha256:218aaed7bb0198332d81ca6f46ba33f810ac90b4397a7cf9f9cfb2f23e0c12a4",
+      "size": 73124
+    },
+    {
+      "name": "packages.json",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-17a9932a369739bc700f/packages.json",
+      "sha256": "sha256:61e81f02b0afd36ce5e650e82b8495d28f4fad4dacce9462c3d2d827729006da",
+      "size": 774
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-17a9932a369739bc700f/SHA256SUMS.txt",
+      "sha256": "sha256:575cf275362e4f94b8451b3ec4c0cdfdff5fc0171717d0b043fa8e7962466f9e",
+      "size": 539
+    },
+    {
+      "name": "Su34_NoseSeam_CorrespondingSources.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-17a9932a369739bc700f/Su34_NoseSeam_CorrespondingSources.zip",
+      "sha256": "sha256:6f00eba2e79a13cb6c655291dbe2716cbf18788ec87bb9d3b6f4e26f7c654a9f",
+      "size": 43318957
+    },
+    {
+      "name": "Su34_NoseSeam_Windows_x64.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-17a9932a369739bc700f/Su34_NoseSeam_Windows_x64.zip",
+      "sha256": "sha256:0c880d6cd4668f96563484181c76c5bd6e67968c20dd48733358ffbaa2f8cd07",
+      "size": 123101764
+    },
+    {
+      "name": "Su34_NoseSeam_Windows_x86.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-17a9932a369739bc700f/Su34_NoseSeam_Windows_x86.zip",
+      "sha256": "sha256:39db8e549bc86f1f38641655f8a262c593e53e24450585cf4656f0f8d2dca97c",
+      "size": 122926789
+    }
+  ],
+  "native32_scope": "Actual launch and G key commands; overview images inspected",
+  "native64_scope": "Actual launch and complete gear1->0->1 telemetry; closeup seam inspected separately under Wine",
+  "authenticated_redownload_sha_verified": true,
+  "anonymous_model_asset_access_404": true
+}
