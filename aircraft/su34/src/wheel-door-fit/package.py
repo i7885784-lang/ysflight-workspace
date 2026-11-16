@@ -6,7 +6,8 @@ def native(bits):
  d=api(f'repos/{REPO}/contents/aircraft/su34/work/wheel-door-fit/native-{bits}.json?ref={BRANCH}');n=json.loads(base64.b64decode(d['content']));assert n['passed'] and n['model_sha256']==MODEL;return n
 checks={b:native(b) for b in [32,64]}
 payload=dict(tag_name=TAG,target_commitish=BRANCH,draft=True,name='Су-34: подгонка боковых створок и рамки',body='Локально обрезаны выступающие контуры OriginalSideDoorLWheel/RightWheel и прилегающая неподвижная рамка. Сохранены толщина, палитра, оси, родительские трансформации, все состояния анимации, стойки и колёса. Предыдущая правка передних створок сохранена. Движок и остальные самолёты прежние. Сравнение в screenshots/su34-wheel-door-fit. Разрядность PE и целостность ZIP проверены; нативные Windows проверки описаны в JSON и отчёте. Модель распространяется только через авторизованный черновик по aircraft/su34/PROJECT.md.')
-r=json.loads(subprocess.run(['gh','api','--method','POST',f'repos/{REPO}/releases','--input','-'],input=json.dumps(payload),text=True,capture_output=True,check=True).stdout);assert r['draft']
+r=next(x for x in api(f'repos/{REPO}/releases') if x['tag_name']==TAG);assert r['draft']
+r=json.loads(subprocess.run(['gh','api','--method','PATCH',f'repos/{REPO}/releases/{r["id"]}','--input','-'],input=json.dumps(payload),text=True,capture_output=True,check=True).stdout);assert r['draft']
 rows=[];model=None;baseline_model=None
 for bits in [32,64]:
  p=baseline(bits,work);model=generate(p,work);arch=BASE[bits][0];out=work/f'Su34_WheelDoorFit_Windows_{arch}.zip'
@@ -35,6 +36,9 @@ with zipfile.ZipFile(source) as old,zipfile.ZipFile(sources,'w',compression=zipf
 for bits,n in checks.items():(work/f'native-{bits}.json').write_text(json.dumps(n,indent=2))
 (work/'packages.json').write_text(json.dumps(rows,indent=2));assets=[work/x['file'] for x in rows]+[sources,work/'packages.json',work/'native-32.json',work/'native-64.json'];sums=work/'SHA256SUMS.txt';sums.write_text(''.join(sha(p.read_bytes())+'  '+p.name+'\n' for p in assets));assets.append(sums)
 for p in assets:subprocess.run(['gh','release','upload',TAG,str(p),'--repo',REPO],check=True)
+# Native checks have finished; remove only our temporary private model transfer asset.
+for temporary in api(f'repos/{REPO}/releases/{r["id"]}')['assets']:
+ if temporary['name']=='Su34_WheelDoorFit_Model.dnm':subprocess.run(['gh','api','--method','DELETE',f'repos/{REPO}/releases/assets/{temporary["id"]}'],check=True)
 d=api(f'repos/{REPO}/releases/{r["id"]}');assert d['draft']
 for a in d['assets']:
  p=work/a['name'];v=work/'verify.tmp'
