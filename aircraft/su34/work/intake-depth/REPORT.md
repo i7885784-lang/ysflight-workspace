@@ -13,7 +13,14 @@ FCL:41положение,77динамических мешей классов200
 
 ИтоговыйSHA256модели:5ffbd1cedb9b82c81f048319bf4d4e96fb1b85f560ee4ce64bdc68e7d54fd263. Главная/coarse одинаковы. Генератор intake.py; fix.py воспроизводит цепочку предыдущих nose/wheel-исправлений из исходной VectorNozzles-модели и затем добавляет эту вставку. Просмотренный Linux-файл передаётся нативным Windows x86/x64 через авторизованный черновик со строгой проверкой SHA; открытых модельных Actions-артефактов нет.
 
-Нативные запуски/G-цикл, PE32/PE32+, CRC/SHA, сравнение остальных игровых файлов с базой и авторизованное повторное скачивание архивов описаны в STATUS.json. x64 имеет численную телеметрию gear; x86 проверяется запуском, вводом и обзорными кадрами без измерения крайних положений. Неподтверждённые права модели требуют DRAFT согласно aircraft/su34/PROJECT.md: для скачивания нужен вход владельца в GitHub.
+Workflow43918056975 завершён успешно: prepare, нативные Windows32/64 и package. Обе тройки нативных изображений фактически открыты. x64: gear1→0→1, active1. Проверены PE32/PE32+, разные EXE, CRC/SHA, неизменность прочих игровых файлов и авторизованное повторное скачивание всех7активов. Анонимный доступ к каждому активу404; временный DNM для передачи между задачами удалён. Подробности в STATUS.json. x64 имеет численную телеметрию gear; x86 проверяется запуском, вводом и обзорными кадрами без измерения крайних положений. Неподтверждённые права модели требуют DRAFT согласно aircraft/su34/PROJECT.md: для скачивания нужен вход владельца в GitHub.
 
 Код: aircraft/su34/src/intake-depth/{intake,fix,wheel_build,fit,nose_fix,common,prepare,native,package,dnm,mesh}.py и LICENSE. Сценарий .github/workflows/su34-intake-depth.yml. Сравнение screenshots/su34-intake-depth/before-after.png; verification.json — протокол геометрии.
 Откат: предыдущий черновик447319917 и локальная неизменённая модель ae7659 сохранены. Запуск runtime/Play_Su34_Current.bat.
+
+
+## Проверенные сборки
+- [Su34_IntakeDepth_Windows_x64.zip](https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-3cfb3e5a0468bba16db5/Su34_IntakeDepth_Windows_x64.zip) — 123230771 байт; sha256:de599fb51ad6868bf506b0abe323545efe7c14d2692552cace8a2839af874fb2
+- [Su34_IntakeDepth_Windows_x86.zip](https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-3cfb3e5a0468bba16db5/Su34_IntakeDepth_Windows_x86.zip) — 123055797 байт; sha256:5bc0b39a935496ea2d7c0173777bc56c5bf51f0bbedb212d7bceb9ce7b2541e7
+
+[Черновик](https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-3cfb3e5a0468bba16db5).

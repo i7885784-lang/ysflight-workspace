@@ -1,0 +1,94 @@
+{
+  "completed": true,
+  "parent_model_sha256": "ae7659092f75d61393c72462ffd9b6f716e58a6ae8953cd8d76f16e4a0acbfa4",
+  "model_sha256": "5ffbd1cedb9b82c81f048319bf4d4e96fb1b85f560ee4ce64bdc68e7d54fd263",
+  "workflow_run": 43918056975,
+  "changed_meshes": [
+    "InsideIntakeL.srf",
+    "InsideIntakeR.srf"
+  ],
+  "scope": "Su30-style matte closed rear inside the existing Su34 intake liners",
+  "checks": {
+    "all_nodes_and_animations_exact": true,
+    "all_other_meshes_exact": true,
+    "old_liner_vertices_indices_normals_exact": true,
+    "exterior_shape_and_paint_exact": true,
+    "original_compressors_retained_behind_dark_rear": true,
+    "emissive": false,
+    "added_triangles_per_liner": 48,
+    "cap_gear_sweep_poses": 41,
+    "gear_meshes_checked": 77,
+    "new_cap_gear_intersections": 0,
+    "new_cap_airframe_intersections": 0,
+    "local_game_before_after_three_angles_opened": true,
+    "public_comparison_bytes_verified": 8567,
+    "native_windows32_launch_keys_images": true,
+    "native_windows32_numeric_gear_available": false,
+    "native_windows64_gear_min": 0,
+    "native_windows64_gear_last": 1,
+    "native_windows64_last_active": 1,
+    "native_images_opened": true,
+    "pe_architectures_verified_distinct": true,
+    "identical_reviewed_model_both_architectures": true,
+    "all_other_game_entries_exact": true,
+    "all_assets_authenticated_redownload_sha_verified": true,
+    "anonymous_assets_404": true,
+    "temporary_model_transfer_asset_removed": true
+  },
+  "limitations": [
+    "The original compressors are unchanged but occluded by the dark rear when viewed into the intake; this is the requested visual-depth insert.",
+    "Forward internal walls were not rebuilt; their existing appearance remains at oblique angles.",
+    "x86 runtime overview images/input do not measure gear endpoints; numerical telemetry is verified in x64.",
+    "Collision checks concern the new rear surfaces, not all pre-existing aircraft intersections.",
+    "Full model/game downloads require owner authentication under aircraft/su34/PROJECT.md."
+  ],
+  "release": {
+    "id": 447359773,
+    "draft": true,
+    "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-3cfb3e5a0468bba16db5",
+    "assets": [
+      {
+        "name": "native-32.json",
+        "bytes": 346,
+        "sha256": "2afb1c627d85e3a897eb740fce43781ebc52ec430017d7ba250afffd42483d3e",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-3cfb3e5a0468bba16db5/native-32.json"
+      },
+      {
+        "name": "native-64.json",
+        "bytes": 72403,
+        "sha256": "db2eb73c3690def8e924796ac2a95fec8cc3b0b483aad15778bd18a0e565023f",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-3cfb3e5a0468bba16db5/native-64.json"
+      },
+      {
+        "name": "packages.json",
+        "bytes": 780,
+        "sha256": "fac29a50b40a38accadaff17553789b4871f02db43d4e7dff551441820f30537",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-3cfb3e5a0468bba16db5/packages.json"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "bytes": 548,
+        "sha256": "d1610586c166c6b5ed656cd35e3a9126d326f1e2842eaf95adb498c2ddf32518",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-3cfb3e5a0468bba16db5/SHA256SUMS.txt"
+      },
+      {
+        "name": "Su34_IntakeDepth_CorrespondingSources.zip",
+        "bytes": 43390520,
+        "sha256": "54fdb6fc08a8c604f094abea308324a34551228ab0d0353f47881536840de3e3",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-3cfb3e5a0468bba16db5/Su34_IntakeDepth_CorrespondingSources.zip"
+      },
+      {
+        "name": "Su34_IntakeDepth_Windows_x64.zip",
+        "bytes": 123230771,
+        "sha256": "de599fb51ad6868bf506b0abe323545efe7c14d2692552cace8a2839af874fb2",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-3cfb3e5a0468bba16db5/Su34_IntakeDepth_Windows_x64.zip"
+      },
+      {
+        "name": "Su34_IntakeDepth_Windows_x86.zip",
+        "bytes": 123055797,
+        "sha256": "5bc0b39a935496ea2d7c0173777bc56c5bf51f0bbedb212d7bceb9ce7b2541e7",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-3cfb3e5a0468bba16db5/Su34_IntakeDepth_Windows_x86.zip"
+      }
+    ]
+  }
+}
