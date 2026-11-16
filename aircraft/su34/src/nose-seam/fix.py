@@ -17,6 +17,6 @@ for n in ns:
  v[:,0]+=w*(tip[:,0]-np.sign(v[:,0])*.46)
  after=np.linalg.norm(np.cross(v[edge]-origin,axis),axis=1)
  m.v=[tuple(x) for x in v];p[dnm.fil(n)]=m.srf();report[name]=dict(changed_vertices=int(np.count_nonzero(w)),max_hinge_distance_before_mm=float(before.max()*1000),max_hinge_distance_after_mm=float(after.max()*1000),faces=len(m.f),animation_unchanged=True)
-dest.parent.mkdir(parents=True,exist_ok=True);dnm.write(dest,p,ns)
+dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(pack_dnm(list(p.items()),sum(ns,[])).encode())
 Path(a.report).write_text(json.dumps(report,indent=2))
 print(hashlib.sha256(dest.read_bytes()).hexdigest())
