@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python -m pip install numpy scipy Pillow
+      - run: python -m pip install numpy==2.3.5 scipy==1.17.0 Pillow
       - name: Real native gear cycle without public model artifacts
         run: python aircraft/su34/src/nose-seam-v2/native.py ${{ matrix.bits }}
   package:
@@ -38,8 +38,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python -m pip install numpy scipy Pillow
+      - run: python -m pip install numpy==2.3.5 scipy==1.17.0 Pillow
       - name: Keep model and full games only in authenticated draft; check anonymous404
         run: python aircraft/su34/src/nose-seam-v2/package.py
 
 # Canonical binary model output; CRLF-only mismatch corrected.
+
+# Quantized vertices before normals: identical stored geometry across platforms.
