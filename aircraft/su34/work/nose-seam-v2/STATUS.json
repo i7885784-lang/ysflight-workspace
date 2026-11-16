@@ -1,0 +1,77 @@
+{
+  "completed": true,
+  "state": "verified_local_bilateral_views_and_native_windows_packages",
+  "model_sha256": "e60bef484705795468dc12666ab23f0d99d7478f3003a4029704236e03a31398",
+  "workflow_run": 43881303213,
+  "checks": {
+    "local_game_closeups_opened": true,
+    "both_sides_and_neighbor_angles": true,
+    "closed_and_intermediate_poses": true,
+    "original_vertices_and_noncap_faces_colors_normals_exact": true,
+    "all_nodes_and_animation_exact": true,
+    "native_windows_x86_launch_keys_images": true,
+    "native_windows_x86_numeric_gear": false,
+    "native_windows_x64_gear_min": 0,
+    "native_windows_x64_gear_last": 1,
+    "native_windows_x64_last_active": 1,
+    "pe_x86_and_x64_distinct": true,
+    "all_other_game_entries_exact": true,
+    "all_uploaded_assets_authenticated_redownload_sha_verified": true,
+    "anonymous_model_asset_access_404": true
+  },
+  "release": {
+    "id": 447120738,
+    "draft": true,
+    "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-f7ef08cca039dbc12fb0",
+    "assets": [
+      {
+        "name": "native-32.json",
+        "bytes": 346,
+        "sha256": "08bb42ce8d2db053e355cb90e96ca3fb1b969661df0e690bcef561dd889f8a59",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-f7ef08cca039dbc12fb0/native-32.json"
+      },
+      {
+        "name": "native-64.json",
+        "bytes": 59433,
+        "sha256": "49691ee5218775abe847ec8b8e3ab9649a2c4f55be1e7eba8e32d8b1956d70ca",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-f7ef08cca039dbc12fb0/native-64.json"
+      },
+      {
+        "name": "packages.json",
+        "bytes": 780,
+        "sha256": "35d17fae448f2f2994639096e523eecbbfd788b072ef36abbf721d21ff475211",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-f7ef08cca039dbc12fb0/packages.json"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "bytes": 548,
+        "sha256": "7167269894f9779afbe23d1d76972b470888f1b69736c26064a0c52482276ef7",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-f7ef08cca039dbc12fb0/SHA256SUMS.txt"
+      },
+      {
+        "name": "Su34_NoseSeam_v2_CorrespondingSources.zip",
+        "bytes": 43350551,
+        "sha256": "113c0b70d6c3c54adb8c855c7cbe1bd1affb31f60ec0f82a33a57bff418068f0",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-f7ef08cca039dbc12fb0/Su34_NoseSeam_v2_CorrespondingSources.zip"
+      },
+      {
+        "name": "Su34_NoseSeam_v2_Windows_x64.zip",
+        "bytes": 123164089,
+        "sha256": "f7f51be53645b4f2c82e670692576486d5bc8b167148de31cec6b2860cba8c1f",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-f7ef08cca039dbc12fb0/Su34_NoseSeam_v2_Windows_x64.zip"
+      },
+      {
+        "name": "Su34_NoseSeam_v2_Windows_x86.zip",
+        "bytes": 122989114,
+        "sha256": "a3d45288beb4f9e2b1251511581abea60c7684ce111803ee5ef9be58e24d128e",
+        "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-f7ef08cca039dbc12fb0/Su34_NoseSeam_v2_Windows_x86.zip"
+      }
+    ]
+  },
+  "limitations": [
+    "Original small surface ripple retained.",
+    "252 extra mesh contact pairs across201poses: connected hinge return overlaps fixed mounting surfaces; no assertion of globally intersection-free geometry.",
+    "x86 native overview images do not measure gear endpoints; numerical gear state is validated in x64.",
+    "Draft requires owner GitHub login under aircraft/su34/PROJECT.md distribution instructions."
+  ]
+}
