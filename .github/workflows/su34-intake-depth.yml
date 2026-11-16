@@ -1,0 +1,64 @@
+name: Su34 dark intake insert
+on:
+  push:
+    branches: [fix/su34-intake-depth-20261116]
+    paths: [.github/workflows/su34-intake-depth.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+env:
+  PYTHONUTF8: "1"
+  TASK_BRANCH: fix/su34-intake-depth-20261116
+  GH_TOKEN: ${{ github.token }}
+jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: aircraft/su34/src/intake-depth
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy==2.3.5 scipy==1.17.0 shapely==2.1.2 Pillow
+      - name: Canonical model only in authenticated draft
+        run: python aircraft/su34/src/intake-depth/prepare.py
+  native:
+    needs: prepare
+    runs-on: windows-2022
+    timeout-minutes: 10
+    strategy:
+      max-parallel: 1
+      matrix:
+        bits: [32,64]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: aircraft/su34/src/intake-depth
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy==2.3.5 scipy==1.17.0 shapely==2.1.2 Pillow
+      - name: Real native gear cycle without public model artifacts
+        run: python aircraft/su34/src/intake-depth/native.py ${{ matrix.bits }}
+  package:
+    needs: native
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: aircraft/su34/src/intake-depth
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy==2.3.5 scipy==1.17.0 shapely==2.1.2 Pillow
+      - name: Keep model and full games only in authenticated draft; check anonymous404
+        run: python aircraft/su34/src/intake-depth/package.py
+
+# Canonical binary model output; CRLF-only mismatch corrected.
+
+# Quantized vertices before normals: identical stored geometry across platforms.
+
+# Fixed micrometer overlay grid; normalize polygon ordering before triangulation.
