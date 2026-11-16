@@ -1,5 +1,5 @@
 {
-  "completed": true,
+  "completed": false,
   "release_id": 446957072,
   "draft": true,
   "release_url": "https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-17a9932a369739bc700f",
@@ -58,5 +58,19 @@
   "native32_scope": "Actual launch and G key commands; overview images inspected",
   "native64_scope": "Actual launch and complete gear1->0->1 telemetry; closeup seam inspected separately under Wine",
   "authenticated_redownload_sha_verified": true,
-  "anonymous_model_asset_access_404": true
+  "anonymous_model_asset_access_404": true,
+  "seam_fix_complete": false,
+  "review_status": "needs_revision",
+  "recheck": {
+    "date": "2026-11-16",
+    "published_model_rechecked": true,
+    "remaining_gap_side": "negative-X side, FlushDoorN0",
+    "previous_both_sides_claim_withdrawn": true,
+    "game_or_model_changed": false,
+    "images": [
+      "screenshots/su34-nose-seam/recheck/both-sides.png",
+      "screenshots/su34-nose-seam/recheck/sideB-level.png"
+    ],
+    "reason": "X-only edge fit insufficient; height profile at opposite hinge remains mismatched"
+  }
 }
