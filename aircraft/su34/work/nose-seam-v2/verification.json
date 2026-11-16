@@ -1,0 +1,41 @@
+{
+  "nodes_and_animations_exact": true,
+  "changed_meshes": [
+    "FlushDoorN0.srf",
+    "FlushDoorN1.srf"
+  ],
+  "original_vertices_exact": true,
+  "non_cap_skin_faces_colors_brightness_exact": true,
+  "only_hinge_cap_replaced": true,
+  "poses": 201,
+  "baseline_contact_pairs": 742,
+  "candidate_contact_pairs": 994,
+  "removed": [],
+  "added_contacts": {
+    "FlushDoorN0/InternalSeamSeatNose": {
+      "count": 4,
+      "min_g": 0.0,
+      "max_g": 0.015
+    },
+    "FlushDoorN1/InternalSeamSeatNose": {
+      "count": 15,
+      "min_g": 0.0,
+      "max_g": 0.07
+    },
+    "FlushDoorN1/RecessedNoseBaySeal": {
+      "count": 30,
+      "min_g": 0.005,
+      "max_g": 0.15
+    },
+    "FlushDoorN1/InternalWellN": {
+      "count": 182,
+      "min_g": 0.01,
+      "max_g": 1.0
+    },
+    "FlushDoorN0/SourceAirframe": {
+      "count": 21,
+      "min_g": 0.07,
+      "max_g": 0.17
+    }
+  }
+}
