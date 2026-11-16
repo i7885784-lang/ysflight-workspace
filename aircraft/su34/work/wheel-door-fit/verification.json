@@ -1,0 +1,104 @@
+{
+  "nodes_and_animation_exact": true,
+  "changed_meshes": [
+    "OriginalSideDoorLWheel.srf",
+    "OriginalSideDoorRWheel.srf",
+    "ConformalWingRootBaySides.srf",
+    "MainBaySeals.srf",
+    "InternalSeamSeatMain.srf"
+  ],
+  "door_topology": {
+    "OriginalSideDoorLWheel.srf": {
+      "degenerate_faces": 0,
+      "all_welded_edges_two_faces": true,
+      "faces": 128
+    },
+    "OriginalSideDoorRWheel.srf": {
+      "degenerate_faces": 0,
+      "all_welded_edges_two_faces": true,
+      "faces": 171
+    }
+  },
+  "all_fully_rear_surround_faces_preserved": true,
+  "mesh_contact_sweep": {
+    "poses": 41,
+    "fixed_meshes": [
+      "SourceAirframe",
+      "ConformalWingRootBaySides",
+      "MainBaySeals",
+      "InternalSeamSeatMain",
+      "Su34RearBayInnerWallL",
+      "Su34RearBayInnerWallR"
+    ],
+    "baseline_pairs": 10,
+    "candidate_pairs": 23,
+    "added": [
+      {
+        "gear": 0.025,
+        "door": "OriginalSideDoorLWheel",
+        "fixed": "ConformalWingRootBaySides"
+      },
+      {
+        "gear": 0.025,
+        "door": "OriginalSideDoorLWheel",
+        "fixed": "MainBaySeals"
+      },
+      {
+        "gear": 0.025,
+        "door": "OriginalSideDoorRWheel",
+        "fixed": "ConformalWingRootBaySides"
+      },
+      {
+        "gear": 0.025,
+        "door": "OriginalSideDoorRWheel",
+        "fixed": "MainBaySeals"
+      },
+      {
+        "gear": 0.05,
+        "door": "OriginalSideDoorLWheel",
+        "fixed": "ConformalWingRootBaySides"
+      },
+      {
+        "gear": 0.05,
+        "door": "OriginalSideDoorLWheel",
+        "fixed": "InternalSeamSeatMain"
+      },
+      {
+        "gear": 0.05,
+        "door": "OriginalSideDoorRWheel",
+        "fixed": "ConformalWingRootBaySides"
+      },
+      {
+        "gear": 0.05,
+        "door": "OriginalSideDoorRWheel",
+        "fixed": "InternalSeamSeatMain"
+      },
+      {
+        "gear": 0.07500000000000001,
+        "door": "OriginalSideDoorLWheel",
+        "fixed": "ConformalWingRootBaySides"
+      },
+      {
+        "gear": 0.07500000000000001,
+        "door": "OriginalSideDoorLWheel",
+        "fixed": "InternalSeamSeatMain"
+      },
+      {
+        "gear": 0.07500000000000001,
+        "door": "OriginalSideDoorRWheel",
+        "fixed": "ConformalWingRootBaySides"
+      },
+      {
+        "gear": 0.07500000000000001,
+        "door": "OriginalSideDoorRWheel",
+        "fixed": "InternalSeamSeatMain"
+      },
+      {
+        "gear": 0.1,
+        "door": "OriginalSideDoorLWheel",
+        "fixed": "ConformalWingRootBaySides"
+      }
+    ],
+    "removed_count": 0
+  }
+}
