@@ -1,0 +1,50 @@
+{
+  "complete": true,
+  "model_sha256": "d35380cca144ac34c8e31d704501666a14831c8e2008a93296654984b639b970",
+  "branch": "fix/su34-intake-channel-20261117",
+  "run_id": 44035511229,
+  "release_id": 448264736,
+  "release_url": "https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-cdda810e19c9a005991d",
+  "draft": true,
+  "owner_login_required": true,
+  "final_rear_z_m": -3.1,
+  "whole_channel_interior_shaded": true,
+  "source_airframe_inner_polygons": 260,
+  "external_materials_geometry_rig_unchanged": true,
+  "native_windows_retested": false,
+  "existing_executables_unchanged": true,
+  "final_depth_front_view_opened": true,
+  "previous_depth_front_and_quarter_views_opened": true,
+  "assets": [
+    {
+      "name": "packages.json",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-cdda810e19c9a005991d/packages.json",
+      "bytes": 832,
+      "sha256": "699e3dc7f1b64698201ee5b1dd6307cd392e925d8dcf98f09767649058ee2e8c"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-cdda810e19c9a005991d/SHA256SUMS.txt",
+      "bytes": 392,
+      "sha256": "a45dbda983c63a0928004018a20b718b3e6b9aa38346557a325f89f39e05e678"
+    },
+    {
+      "name": "Su34_IntakeChannel_CorrespondingSources.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-cdda810e19c9a005991d/Su34_IntakeChannel_CorrespondingSources.zip",
+      "bytes": 49523109,
+      "sha256": "d95b529c782f4e72d572aa95c85f0f1e40fad8cf5850591678d7ab9370aeacec"
+    },
+    {
+      "name": "Su34_IntakeChannel_Windows_x64.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-cdda810e19c9a005991d/Su34_IntakeChannel_Windows_x64.zip",
+      "bytes": 123236801,
+      "sha256": "c199e1409358f7649e545266149edeb7b692d8f5f8a1c3efa44421ec11b5cf2a"
+    },
+    {
+      "name": "Su34_IntakeChannel_Windows_x86.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-cdda810e19c9a005991d/Su34_IntakeChannel_Windows_x86.zip",
+      "bytes": 123061828,
+      "sha256": "a27cf4bfff1272f997bc80d69e7452e5227b2d4a570be41d4a904a96b90fc70a"
+    }
+  ]
+}

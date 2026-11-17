@@ -1,0 +1,9 @@
+{
+  "material_only_relative_to_deeper_geometry": true,
+  "all_nodes_normals_animations_exact": true,
+  "both_rear_planes_z": -3.1,
+  "gear_poses": 41,
+  "gear_meshes": 17,
+  "rear_gear_contacts": [],
+  "rear_airframe_contacts": []
+}
