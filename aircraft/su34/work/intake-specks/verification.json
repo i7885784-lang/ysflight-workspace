@@ -1,0 +1,17 @@
+{
+  "changed_meshes": [
+    "SourceAirframe.srf"
+  ],
+  "all_other_meshes_and_nodes_exact": true,
+  "all_original_vertices_indices_normals_brightness_exact": true,
+  "lower_inward_face_materials_changed": 247,
+  "new_fitted_wall_face_records": 160,
+  "bay_wall_clearance_mm": 21.213203435596423,
+  "new_wall_gear_and_bay_contacts": [],
+  "gear_poses": [
+    0,
+    0.5,
+    1
+  ],
+  "degenerate_triangles": 0
+}
