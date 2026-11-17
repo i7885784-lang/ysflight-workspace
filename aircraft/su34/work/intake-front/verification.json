@@ -1,0 +1,21 @@
+{
+  "changed_meshes": [
+    "InsideIntakeL.srf",
+    "InsideIntakeR.srf"
+  ],
+  "all_nodes_and_animations_exact": true,
+  "all_other_meshes_exact": true,
+  "old_liner_vertices_indices_normals_exact": true,
+  "rear_z_m": -1.4,
+  "depth_from_liner_start_m": 1.05,
+  "non_emissive": true,
+  "rear_rgb": [
+    18,
+    22,
+    25
+  ],
+  "poses": 41,
+  "gear_meshes": 17,
+  "new_cap_gear_intersections": [],
+  "new_cap_airframe_intersections": []
+}

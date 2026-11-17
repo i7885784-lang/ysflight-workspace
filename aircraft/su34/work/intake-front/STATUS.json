@@ -1,0 +1,68 @@
+{
+  "complete": true,
+  "branch": "fix/su34-intake-front-20261117",
+  "base_commit": "5c24c8707b1b3f4780212451848d656f4060bb9a",
+  "model_sha256": "6173c6cc9d8e383409ee19f3f5e54ab2c9a787481599c1cb8939fa389d337677",
+  "release_id": 448183937,
+  "release_url": "https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-0ea566c670183516a087",
+  "draft": true,
+  "owner_login_required": true,
+  "actions_run": 44024265896,
+  "windows_x86_native": true,
+  "windows_x64_native": true,
+  "local_game_images_opened": 7,
+  "native_game_images_opened": 6,
+  "changed_meshes": [
+    "InsideIntakeL.srf",
+    "InsideIntakeR.srf"
+  ],
+  "all_other_meshes_nodes_animations_exact": true,
+  "gear_poses": 41,
+  "gear_meshes": 17,
+  "new_cap_gear_contacts": 0,
+  "new_cap_airframe_contacts": 0,
+  "assets": [
+    {
+      "name": "native-32.json",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-0ea566c670183516a087/native-32.json",
+      "bytes": 346,
+      "sha256": "45568d67a30b591dfebf884224008c2f768c2f4bee833f03b1c54407a0b5cf76"
+    },
+    {
+      "name": "native-64.json",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-0ea566c670183516a087/native-64.json",
+      "bytes": 57271,
+      "sha256": "61a3a60669dfc189a0a5d3dd2c7efcff04e83351693cafa633b473272f044b7b"
+    },
+    {
+      "name": "packages.json",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-0ea566c670183516a087/packages.json",
+      "bytes": 780,
+      "sha256": "0fd5996434ebf0862eba87cbf24e1e110c6225cb0176fae34cbe1d29ab5b8a6b"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-0ea566c670183516a087/SHA256SUMS.txt",
+      "bytes": 548,
+      "sha256": "75fff475bcef3da158ffd13976cb0ce5d6ae03bee89e7a8128c439f49a0e5762"
+    },
+    {
+      "name": "Su34_IntakeFront_CorrespondingSources.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-0ea566c670183516a087/Su34_IntakeFront_CorrespondingSources.zip",
+      "bytes": 43393905,
+      "sha256": "25d128dc4fcaf037d98dc60ae6ac3ef339a9f5ce72ce209b129eca502cfa9e4b"
+    },
+    {
+      "name": "Su34_IntakeFront_Windows_x64.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-0ea566c670183516a087/Su34_IntakeFront_Windows_x64.zip",
+      "bytes": 123232753,
+      "sha256": "7108bcb79df17666deea05dddfda433cd04220b1dbece72652660e6fbd9a45e9"
+    },
+    {
+      "name": "Su34_IntakeFront_Windows_x86.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-0ea566c670183516a087/Su34_IntakeFront_Windows_x86.zip",
+      "bytes": 123057779,
+      "sha256": "1352fb5b1802b002c777d1fbeb1921d11269cd44aa8b90abb07d1b4fe2bdd261"
+    }
+  ]
+}

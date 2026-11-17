@@ -1,0 +1,17 @@
+{
+  "InsideIntakeL": {
+    "old_rear_z": -3.49,
+    "new_rear_z": -1.4,
+    "depth_from_liner_start_m": 1.0499999999999998,
+    "ring_points": 33,
+    "cap_faces": 62
+  },
+  "InsideIntakeR": {
+    "old_rear_z": -3.49,
+    "new_rear_z": -1.4,
+    "depth_from_liner_start_m": 1.0499999999999998,
+    "ring_points": 33,
+    "cap_faces": 62
+  },
+  "model_sha256": "6173c6cc9d8e383409ee19f3f5e54ab2c9a787481599c1cb8939fa389d337677"
+}
