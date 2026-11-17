@@ -1,0 +1,60 @@
+{
+  "task": "Su34 upper intake bevel black exposure and second lower rim notch",
+  "model_sha256": "4aaaedfe34aee1247861eec4d2547642acba1b4aa36b17ccc3d8fbef36909eb9",
+  "baseline_sha256": "b6470cf3dcea7a07eac5df5ed17818268232a9fce170ac037b2e795e643c7365",
+  "actions_run": 44084976872,
+  "conclusion": "success",
+  "release_id": 448610840,
+  "draft": true,
+  "release_url": "https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-76499d10c6262108b8f2",
+  "assets": [
+    {
+      "name": "packages.json",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-76499d10c6262108b8f2/packages.json",
+      "bytes": 828,
+      "sha256": "4730e177a6b7b52b2f965f71906827018f5eba44b9b82e2e39133f2dc5ae9b18"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-76499d10c6262108b8f2/SHA256SUMS.txt",
+      "bytes": 386,
+      "sha256": "be7f403e50a7ddeecfb9f2ba9a920e69658e3a208f8a8fa3b27ccdc37ba29af0"
+    },
+    {
+      "name": "Su34_IntakeSeams_CorrespondingSources.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-76499d10c6262108b8f2/Su34_IntakeSeams_CorrespondingSources.zip",
+      "bytes": 67984727,
+      "sha256": "8407869a6434d59d6d4798b8d5f78a7bebe1c7faff1028943dfcb48c5de734af"
+    },
+    {
+      "name": "Su34_IntakeSeams_Windows_x64.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-76499d10c6262108b8f2/Su34_IntakeSeams_Windows_x64.zip",
+      "bytes": 123309045,
+      "sha256": "698401777c622dd5bab6abbc3dc1d192647d72fcf2fc9371d3cc226b09d309f7"
+    },
+    {
+      "name": "Su34_IntakeSeams_Windows_x86.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-76499d10c6262108b8f2/Su34_IntakeSeams_Windows_x86.zip",
+      "bytes": 123134071,
+      "sha256": "ed3a3f79670784cb02f8ca90c852518d8348c9a8fa6c219d2d8bb3927a0e7567"
+    }
+  ],
+  "verification": {
+    "other_meshes_nodes_animations_exact": true,
+    "all_original_vertices_unchanged": true,
+    "gear_meshes": 17,
+    "gear_poses": [
+      0,
+      0.5,
+      1
+    ],
+    "new_source_gear_contact_pairs": 0,
+    "degenerate_triangles": 0,
+    "zip_crc_and_models_verified": true,
+    "uploaded_asset_digests_match": true,
+    "pe32_x86_and_pe32plus_x64": true,
+    "native_windows_relaunch": false,
+    "actual_wine64_game_screenshots": true,
+    "rollback_preserved": true
+  }
+}
