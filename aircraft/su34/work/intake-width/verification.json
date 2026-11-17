@@ -1,0 +1,29 @@
+{
+  "widths": [
+    {
+      "side": 1,
+      "before_m": 0.836474,
+      "after_m": 0.7862860000000002,
+      "ratio": 0.9400005260175452,
+      "centre_shift_m": 1.1102230246251565e-16
+    },
+    {
+      "side": -1,
+      "before_m": 0.8364649999999999,
+      "after_m": 0.7862769999999999,
+      "ratio": 0.9399998804492716,
+      "centre_shift_m": -1.6653345369377348e-16
+    }
+  ],
+  "all_heights_and_z_exact": true,
+  "all_nodes_and_other_meshes_exact": true,
+  "colors_faces_indices_exact": true,
+  "protected_forward_nose_and_upper_vertices_exact": true,
+  "new_degenerate_faces": 0,
+  "gear_poses": [
+    0,
+    0.5,
+    1
+  ],
+  "new_gear_contact_pairs": []
+}
