@@ -1,0 +1,52 @@
+{
+  "complete": true,
+  "model_sha256": "dcc4e9869ed091cc70d6a90ec717d4a9467fb1e0ef1086971cf87b554995a5a6",
+  "branch": "fix/su34-intake-clean-20261117",
+  "run_id": 44040481947,
+  "release_id": 448295867,
+  "release_url": "https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-a460dbb7fd50d27e8525",
+  "draft": true,
+  "owner_login_required": true,
+  "rear_z_m": -3.35,
+  "removed_intersecting_rib_faces": 32,
+  "removed_duplicate_lining_faces_per_channel": 240,
+  "backing_faces_shaded": 4,
+  "all_other_meshes_nodes_and_animations_exact": true,
+  "actual_final_game_images_opened": 5,
+  "new_cap_gear_contacts": 0,
+  "new_cap_airframe_contacts": 0,
+  "native_windows_retested": false,
+  "existing_executables_unchanged": true,
+  "assets": [
+    {
+      "name": "packages.json",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-a460dbb7fd50d27e8525/packages.json",
+      "bytes": 828,
+      "sha256": "623a47f5dc47997e121710ab3c2550c7249d4f813e1ed7ff1e86beece10473e3"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-a460dbb7fd50d27e8525/SHA256SUMS.txt",
+      "bytes": 386,
+      "sha256": "b5d64f8ffebd32b57fe772ff6fef5e429afc4a84ff3133e1ec5aceaa58f8a4cb"
+    },
+    {
+      "name": "Su34_IntakeClean_CorrespondingSources.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-a460dbb7fd50d27e8525/Su34_IntakeClean_CorrespondingSources.zip",
+      "bytes": 55634163,
+      "sha256": "35bbf799d778c01c7c068c0d2b12ecc1f7a1c7a8d2f9d3db87ed3c5f78859121"
+    },
+    {
+      "name": "Su34_IntakeClean_Windows_x64.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-a460dbb7fd50d27e8525/Su34_IntakeClean_Windows_x64.zip",
+      "bytes": 123200501,
+      "sha256": "76f504dddb8ce94731259e30126eee894ffa39578384364e3b3a9c427a672270"
+    },
+    {
+      "name": "Su34_IntakeClean_Windows_x86.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-a460dbb7fd50d27e8525/Su34_IntakeClean_Windows_x86.zip",
+      "bytes": 123025526,
+      "sha256": "cf0097d8406273aca8ef711a014baf2e5fa81028b75ba4dba8220d4e0cf5cc9c"
+    }
+  ]
+}
