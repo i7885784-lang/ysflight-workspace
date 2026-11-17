@@ -1,0 +1,1 @@
+Rejected experimental model, shown at owner's request. These are actual in-game captures. No model or game builds published; delivered version remains unchanged. Lower silhouette and upper join remain unresolved.
