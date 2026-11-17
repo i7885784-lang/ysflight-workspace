@@ -9,7 +9,8 @@ def download(asset,path):
 old=api(f'repos/{repo}/releases/448264736');assert old['draft'];assets={a['name']:a for a in old['assets']}
 body='Исправлены внутренние артефакты обоих воздухозаборников. Удалены пересекающие стенку декоративные полоски32полигона SourceAirframe и дублирующая облицовка240полигонов в каждом InsideIntake: она пересекалась с исходными стенками и проходила выше настоящего дна. Исходные стены и наружная обшивка сохранены. Задние поверхности построены по реальному сечению исходного канала наZ=-3.35м, ещё25см глубже. Затемнение четырёх открывшихся внутренних полигонов согласовано с остальным каналом. Узлы, шасси, ниши и анимации точные прежние. Реальные ракурсы в игре просмотрены. Повторные nativeWindowsзапуски не проводились; EXE x86/x64 прежние разные. Полные игры только в авторизованном черновике.'
 payload=dict(tag_name=tag,target_commitish=branch,draft=True,name='Су-34: чистые внутренние каналы без двойной облицовки',body=body)
-r=json.loads(subprocess.run(['gh','api','--method','POST',f'repos/{repo}/releases','--input','-'],input=json.dumps(payload),text=True,capture_output=True,check=True).stdout);assert r['draft'];rows=[];model=None
+existing=next((x for x in api(f'repos/{repo}/releases') if x['tag_name']==tag),None)
+r=existing if existing is not None else json.loads(subprocess.run(['gh','api','--method','POST',f'repos/{repo}/releases','--input','-'],input=json.dumps(payload),text=True,capture_output=True,check=True).stdout);assert r['draft'];rows=[];model=None
 expected={32:'e649db35440467ae336ea104417ffed11dd3e5f2b4bc97e6a2e5981aa4e69872',64:'58f7a5fecc27f64bb0602d640d214f6159044f5fd2af62443f962abf097d2b51'}
 for bits,arch in [(32,'x86'),(64,'x64')]:
  inp=work/f'old-{arch}.zip';download(assets[f'Su34_IntakeChannel_Windows_{arch}.zip'],inp)

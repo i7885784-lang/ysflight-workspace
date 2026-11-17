@@ -6,7 +6,7 @@ from shapely import constrained_delaunay_triangles
 sys.path.insert(0,str(Path(__file__).resolve().parent.parent/'intake-front'));import dnm
 from mesh import Mesh,pack_dnm
 import argparse
-p=argparse.ArgumentParser();p.add_argument('--baseline',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--report',type=Path,required=True);a=p.parse_args();src=a.baseline;assert hashlib.sha256(src.read_bytes()).hexdigest()=='d35380cca144ac34c8e31d704501666a14831c8e2008a93296654984b639b970';packs,nodes=dnm.read(src);lines=packs['SourceAirframe.srf'];m=dnm.mesh(lines);v=np.array(m.v);rib_indices=list(range(5068,5076))+list(range(5265,5273));rib_keys={tuple(sorted(tuple(q) for q in v[m.f[i][0]])) for i in rib_indices};remove={i for i,(ids,c,b) in enumerate(m.f) if tuple(sorted(tuple(q) for q in v[ids])) in rib_keys};assert len(remove)==32
+p=argparse.ArgumentParser();p.add_argument('--baseline',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--report',type=Path,required=True);cli=p.parse_args();src=cli.baseline;assert hashlib.sha256(src.read_bytes()).hexdigest()=='d35380cca144ac34c8e31d704501666a14831c8e2008a93296654984b639b970';packs,nodes=dnm.read(src);lines=packs['SourceAirframe.srf'];m=dnm.mesh(lines);v=np.array(m.v);rib_indices=list(range(5068,5076))+list(range(5265,5273));rib_keys={tuple(sorted(tuple(q) for q in v[m.f[i][0]])) for i in rib_indices};remove={i for i,(ids,c,b) in enumerate(m.f) if tuple(sorted(tuple(q) for q in v[ids])) in rib_keys};assert len(remove)==32
 first=lines.index('F');blocks=[];i=first
 while i<len(lines) and lines[i]=='F':
  j=lines.index('E',i)+1;blocks.append(lines[i:j]);i=j
@@ -42,4 +42,4 @@ for node in nodes:
  for t in constrained_delaunay_triangles(poly).geoms:
   xy=np.array(t.exterior.coords)[:-1];q=np.round(np.c_[xy,np.full(3,z)],6);cap.face(q,(18,22,25));cap.face(q[::-1],(18,22,25))
  packs[dnm.fil(node)]=cap.srf();report['channels'][name]={'area_m2':poly.area,'bounds':list(poly.bounds),'cap_faces':len(cap.f),'removed_intersecting_liner_faces':240}
-out=a.output;out.write_bytes(pack_dnm(list(packs.items()),sum(nodes,[])).encode());report['model_sha256']=hashlib.sha256(out.read_bytes()).hexdigest();a.report.write_text(json.dumps(report,indent=2));print({k:v for k,v in report.items() if k not in ['selected_inner_faces','removed_rib_faces']})
+out=cli.output;out.write_bytes(pack_dnm(list(packs.items()),sum(nodes,[])).encode());report['model_sha256']=hashlib.sha256(out.read_bytes()).hexdigest();cli.report.write_text(json.dumps(report,indent=2));print({k:v for k,v in report.items() if k not in ['selected_inner_faces','removed_rib_faces']})
