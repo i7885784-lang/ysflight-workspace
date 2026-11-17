@@ -25,3 +25,5 @@ jobs:
       - run: python -m pip install numpy==2.3.5 shapely==2.1.2 Pillow
       - name: Keep model only in authenticated draft; no repeat native launch tests
         run: python aircraft/su34/src/intake-clean/package.py
+
+# Resume packaging the unchanged reviewed model after CLI argument fix.
