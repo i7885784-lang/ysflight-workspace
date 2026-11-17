@@ -1,0 +1,48 @@
+{
+  "complete": true,
+  "model_sha256": "b6470cf3dcea7a07eac5df5ed17818268232a9fce170ac037b2e795e643c7365",
+  "run_id": 44074543652,
+  "release_id": 448538472,
+  "release_url": "https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-ac233238845fab921994",
+  "draft": true,
+  "owner_login_required": true,
+  "full_game": true,
+  "zip_crc_verified": true,
+  "all_other_game_entries_verified_unchanged": true,
+  "exe_x86_sha256": "e649db35440467ae336ea104417ffed11dd3e5f2b4bc97e6a2e5981aa4e69872",
+  "exe_x64_sha256": "58f7a5fecc27f64bb0602d640d214f6159044f5fd2af62443f962abf097d2b51",
+  "pe32_and_pe32plus_verified": true,
+  "new_native_windows_launches": false,
+  "assets": [
+    {
+      "name": "packages.json",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-ac233238845fab921994/packages.json",
+      "bytes": 832,
+      "sha256": "fe089dcc12f9aa7cce898ec9b1de6d72b7bf2dc77361ea6fe138170e7f93d8c4"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-ac233238845fab921994/SHA256SUMS.txt",
+      "bytes": 392,
+      "sha256": "998cd198beb66a0f15d8ff5f81820285b43704ba53bd78149951e4b8a30c67ac"
+    },
+    {
+      "name": "Su34_IntakeCurrent_CorrespondingSources.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-ac233238845fab921994/Su34_IntakeCurrent_CorrespondingSources.zip",
+      "bytes": 61785506,
+      "sha256": "f897cca96cf908daaf4492b3207d5c758054dc50e11d1d116ef75beb58636d06"
+    },
+    {
+      "name": "Su34_IntakeCurrent_Windows_x64.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-ac233238845fab921994/Su34_IntakeCurrent_Windows_x64.zip",
+      "bytes": 123307610,
+      "sha256": "a3df332290745e60931148f7eece602738439245e22a15cdc651afa48099e091"
+    },
+    {
+      "name": "Su34_IntakeCurrent_Windows_x86.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-ac233238845fab921994/Su34_IntakeCurrent_Windows_x86.zip",
+      "bytes": 123132637,
+      "sha256": "211ec080feff4c1ea12265bba396413cc377a8e00acd6f2203e06ef9768a464f"
+    }
+  ]
+}
