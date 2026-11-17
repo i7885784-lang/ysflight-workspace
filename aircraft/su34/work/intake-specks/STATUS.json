@@ -1,0 +1,70 @@
+{
+  "task": "Both Su34 inward lower rims and bay-wall exposure in intake passage",
+  "baseline_model_sha256": "d4dc6f68fe3761a9a5d84b8823af728dedca023e8e7c8c7ff06dde5e931a81e7",
+  "model_sha256": "b26826d172ecb83d5f6063c4c620004cecaf1d5b5a6da4799ea40c1f2d3f257c",
+  "dat_sha256_unchanged": "5f9ca92045f8beca148959957cc5baff7129a969da65368a91741a3a7f4bd7df",
+  "actions_run": 44128921914,
+  "conclusion": "success",
+  "release_id": 448919614,
+  "draft": true,
+  "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-22fce4ae3727f58e371a",
+  "assets": [
+    {
+      "name": "packages.json",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-22fce4ae3727f58e371a/packages.json",
+      "bytes": 1002,
+      "sha256": "ab9872045bd4b1e87426d52fb5671de76831f8e8a6fc35227204d4745f3ed65c"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-22fce4ae3727f58e371a/SHA256SUMS.txt",
+      "bytes": 389,
+      "sha256": "151a098bb208efcf728fec3e8eff6a5db463ac161cea873ed26742ff510302dd"
+    },
+    {
+      "name": "Su34_IntakeSpecks_CorrespondingSources.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-22fce4ae3727f58e371a/Su34_IntakeSpecks_CorrespondingSources.zip",
+      "bytes": 80355549,
+      "sha256": "f7d59b9d6f110f778f99c69d1647263e9845f8c5e50cdd407c45ce3f17e1b186"
+    },
+    {
+      "name": "Su34_IntakeSpecks_Windows_x64.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-22fce4ae3727f58e371a/Su34_IntakeSpecks_Windows_x64.zip",
+      "bytes": 123289437,
+      "sha256": "9a19a19ff1f31e58ac090eaa42d8e302983b1f5fce9c2f6f9b59b0eae46a4a05"
+    },
+    {
+      "name": "Su34_IntakeSpecks_Windows_x86.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-22fce4ae3727f58e371a/Su34_IntakeSpecks_Windows_x86.zip",
+      "bytes": 123114462,
+      "sha256": "03dd6f05031b98d9a25b663f6dc7d47a952e4a65142ad93bf15c511c013c43f3"
+    }
+  ],
+  "verification": {
+    "only_source_airframe_changed": true,
+    "all_original_vertices_indices_normals_brightness_exact": true,
+    "all_other_meshes_nodes_and_animations_exact": true,
+    "new_wall_vs_17gear_poses": [
+      0,
+      0.5,
+      1
+    ],
+    "new_gear_or_fixed_bay_wall_contacts": 0,
+    "bay_clearance_mm": 21.2132,
+    "zero_degenerate_triangles": true,
+    "portable_source_reproduction_exact": true,
+    "rollback_d4_byte_exact": true,
+    "actual_wine64_images_opened": true,
+    "native_windows_relaunch": false,
+    "zip_crc_models_data_other_entries_verified": true,
+    "pe32_x86_pe32plus_x64_verified": true,
+    "all_uploaded_asset_digests_match": true
+  },
+  "changes": {
+    "inward_lip_face_materials": 247,
+    "fitted_duct_wall_face_records": 160,
+    "rear_cap_z_unchanged": -3.35
+  },
+  "rollback": "rollback.py+rollback.json.gz from installedB268 restore D4 exactly; previous private full draft448779195 unchanged",
+  "limitations": "Local intake review, not whole aircraft audit; native Windows relaunch not performed."
+}

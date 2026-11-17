@@ -16,3 +16,5 @@
 Код: src/intake-specks/repair.py (материалы кромки/сборка), fit.py (сопряжение обхода), package.py (полные игры из предыдущего draft). Helpers ../intake-front/dnm.py,mesh.py; numpy2.3.5 иPillow. Команда: `python repair.py --baseline baseline.dnm --output su34.dnm --report report.json`. Полные модели/игры/соответствующие исходники только в авторизованном DRAFT согласно PROJECT.md.
 
 ![До слева, после справа: кромки и две стороны канала](before-after.jpg)
+
+Поставка завершена: Actions44128921914 SUCCESS, [авторизованный draft448919614: полные Windows x86/x64 и соответствующие исходники](https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-22fce4ae3727f58e371a). ZIP CRC, точные SHA модели/DAT, PE32/PE32+, неизменность остальных игровых файлов и все5 серверных SHA проверены. Запуск runtime/Play_Su34_Current.bat. Предыдущая полная сборка448779195 не менялась. Локальный rollback.py+rollback.json.gz восстанавливаетD4 побайтно из новой модели.
