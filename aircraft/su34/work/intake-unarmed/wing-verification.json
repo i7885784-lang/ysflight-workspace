@@ -1,0 +1,15 @@
+{
+  "all_retained_source_face_blocks_exact": 10724,
+  "healthy_wing_face_blocks_exact": 276,
+  "all_original_vertices_exact": true,
+  "control_and_tail_meshes_and_animation_nodes_exact": [
+    "Source_aileron_l",
+    "Source_aileron_r",
+    "OuterAileron240",
+    "OuterAileron241",
+    "Source_rudder",
+    "Source_rudder_2"
+  ],
+  "wing_end_closure_only_existing_boundary_vertices": true,
+  "removed_only_confirmed_weapon_mounts": true
+}
