@@ -1,0 +1,33 @@
+{
+  "model_sha256": "d4dc6f68fe3761a9a5d84b8823af728dedca023e8e7c8c7ff06dde5e931a81e7",
+  "dat_sha256": "5f9ca92045f8beca148959957cc5baff7129a969da65368a91741a3a7f4bd7df",
+  "source_removed_pylon_face_records": 856,
+  "tip_rail_faces_removed": 288,
+  "wing_end_cap_face_records": 36,
+  "tip_launcher_faces_removed": 36,
+  "confirmed_pylon_components_removed": 19,
+  "inward_ceiling_faces_fixed": 10,
+  "all_other_meshes_exact": true,
+  "nodes_and_animations_exact_except_removed_launcher": true,
+  "gear_meshes_and_nodes_exact": 17,
+  "all_original_vertices_exact": true,
+  "source_surface_area_residual_m2": 6.185366601130227e-07,
+  "degenerate_triangles_after": 0,
+  "rear_caps": {
+    "InsideIntakeL.srf": {
+      "area": 0.6826749054700001,
+      "uncovered_within_outline_m2": 0.0,
+      "unchanged": true
+    },
+    "InsideIntakeR.srf": {
+      "area": 0.6826830179524999,
+      "uncovered_within_outline_m2": 0.0,
+      "unchanged": true
+    }
+  },
+  "radial_wall_survey_rays": 864,
+  "radial_wall_survey_no_missing_wall_hits": true,
+  "dat_only_station_default_weapon_changes": true,
+  "physics_collider_other_aircraft_unchanged": true,
+  "native_windows_relaunch": false
+}
