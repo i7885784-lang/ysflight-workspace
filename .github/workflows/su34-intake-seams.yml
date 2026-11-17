@@ -22,6 +22,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python -m pip install numpy==2.3.5
+      - run: python -m pip install numpy==2.3.5 Pillow
       - name: Reproduce model; verify ZIPs, PE architectures and unchanged files
         run: python aircraft/su34/src/intake-seams/package.py
