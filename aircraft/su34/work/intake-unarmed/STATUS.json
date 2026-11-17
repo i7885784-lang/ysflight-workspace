@@ -1,0 +1,68 @@
+{
+  "task": "Su34 internal ceiling shade and weapon pylon removal; wing preservation confirmed",
+  "model_sha256": "d4dc6f68fe3761a9a5d84b8823af728dedca023e8e7c8c7ff06dde5e931a81e7",
+  "dat_sha256": "5f9ca92045f8beca148959957cc5baff7129a969da65368a91741a3a7f4bd7df",
+  "baseline_model_sha256": "4aaaedfe34aee1247861eec4d2547642acba1b4aa36b17ccc3d8fbef36909eb9",
+  "actions_run": 44108289458,
+  "conclusion": "success",
+  "release_id": 448779195,
+  "draft": true,
+  "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/tag/untagged-210c0711dd2a6b4f31bc",
+  "assets": [
+    {
+      "name": "packages.json",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-210c0711dd2a6b4f31bc/packages.json",
+      "bytes": 1006,
+      "sha256": "4c3d4f5b2ddfae8760ddc88a1a85dfff0afdc332b42266d9f6cfc766c3ee5c5c"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-210c0711dd2a6b4f31bc/SHA256SUMS.txt",
+      "bytes": 395,
+      "sha256": "068ea244db638ed6fd149e2809602b155cf963b5728c41293a694f6df0d44fc4"
+    },
+    {
+      "name": "Su34_UnarmedIntakes_CorrespondingSources.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-210c0711dd2a6b4f31bc/Su34_UnarmedIntakes_CorrespondingSources.zip",
+      "bytes": 74175322,
+      "sha256": "9f16144922cf86c5f593ea5f44bc358097caabf1be7dd20ead8c429334839e11"
+    },
+    {
+      "name": "Su34_UnarmedIntakes_Windows_x64.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-210c0711dd2a6b4f31bc/Su34_UnarmedIntakes_Windows_x64.zip",
+      "bytes": 123282175,
+      "sha256": "427d2274a58d33bd107547963a55730a94441365827b95c8f4846fed0ad48265"
+    },
+    {
+      "name": "Su34_UnarmedIntakes_Windows_x86.zip",
+      "url": "https://github.com/i7885784-lang/ysflight-workspace/releases/download/untagged-210c0711dd2a6b4f31bc/Su34_UnarmedIntakes_Windows_x86.zip",
+      "bytes": 123107201,
+      "sha256": "c1a92e920087cc67558aaeab8639f9762aaf5463a86622398d7b894eebe49598"
+    }
+  ],
+  "verification": {
+    "zip_crc_models_and_dat": true,
+    "all_other_game_entries_exact": true,
+    "genuine_pe32_x86_pe32plus_x64": true,
+    "uploaded_digests_match": true,
+    "original_vertices_exact": true,
+    "retained_source_face_blocks_exact": 10724,
+    "healthy_wing_face_blocks_exact": 276,
+    "gear_nodes_and_meshes_exact": 17,
+    "aileron_and_rudder_nodes_meshes_exact": true,
+    "radial_channel_wall_hits": 864,
+    "rear_caps_uncovered_area_m2": 0,
+    "source_degenerate_triangles": 0,
+    "native_windows_relaunch": false,
+    "actual_wine64_images_opened": true
+  },
+  "changes": {
+    "inward_ceiling_faces": 10,
+    "source_pylon_face_records_removed": 856,
+    "own_tip_launcher_face_records_removed": 36,
+    "new_wing_end_closure_face_records": 36,
+    "default_weapon_load_removed": true
+  },
+  "baseline_preserved": "old private draft448610840; local su34-two-seams/candidate.dnm.xz and baseline-su34.dat",
+  "limitations": "No complete-aircraft defect audit or native Windows relaunch; physics and coarse collider unchanged."
+}
