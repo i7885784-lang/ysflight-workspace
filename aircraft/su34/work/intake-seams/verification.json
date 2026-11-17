@@ -1,0 +1,23 @@
+{
+  "baseline_sha256": "b6470cf3dcea7a07eac5df5ed17818268232a9fce170ac037b2e795e643c7365",
+  "model_sha256": "4aaaedfe34aee1247861eec4d2547642acba1b4aa36b17ccc3d8fbef36909eb9",
+  "changed_meshes": [
+    "SourceAirframe.srf"
+  ],
+  "all_nodes_and_animation_records_exact": true,
+  "all_other_meshes_byte_exact": true,
+  "original_vertices_exact": true,
+  "original_dimensions_centres_heights_preserved": true,
+  "degenerate_triangles_before": 0,
+  "degenerate_triangles_after": 0,
+  "gear_meshes_exact": 17,
+  "collision_poses": [
+    0,
+    0.5,
+    1
+  ],
+  "new_source_gear_collision_pairs": [],
+  "rollback_byte_exact": true,
+  "current_native_windows_launch": false,
+  "visual_review": "Actual Wine x64 screenshots;7 same-view before/after pairs"
+}
