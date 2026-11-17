@@ -1,0 +1,27 @@
+{
+  "status": "ISOLATED STUDY, NOT INTEGRATED",
+  "baseline_sha256": "b26826d172ecb83d5f6063c4c620004cecaf1d5b5a6da4799ea40c1f2d3f257c",
+  "candidate_sha256": "12dcaa9abc25884eeb175e709de7cfa71cd7340efff02bc6b9119a5fd694331b",
+  "changed_meshes": [
+    "OriginalSideDoorLWheel.srf",
+    "OriginalSideDoorRWheel.srf",
+    "OriginalSideDoorLStrut.srf",
+    "OriginalSideDoorRStrut.srf",
+    "ConformalWingRootBaySides.srf"
+  ],
+  "gear_meshes_byte_identical": [
+    "MainCylinderL",
+    "MainInnerStemL",
+    "TandemTruckL",
+    "MainCylinderR",
+    "MainInnerStemR",
+    "TandemTruckR"
+  ],
+  "all_other_nodes_byte_identical": true,
+  "external_airframe_and_aperture_frame_unchanged": true,
+  "liner_shape": "symmetric wheel and strut contours, internal island and sliver walls removed",
+  "upper_liner_flare_m": 0.04,
+  "timing": "smoothstep traversal of unchanged baseline poses; proposed game timing, not measured Su34 kinetics",
+  "real_direction": "main forward, with bogie turn; exact angles not verified",
+  "limitations": "conservative liner taper and timing study; exact factory angles and schedule not verified"
+}

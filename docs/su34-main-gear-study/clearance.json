@@ -1,0 +1,45 @@
+{
+  "sampled_poses": 15,
+  "compared_at_corresponding_path_positions": true,
+  "baseline_contacts": 7,
+  "baseline_pairs": [
+    {
+      "g": 0.0,
+      "source": "TandemTruckR",
+      "target": "ConformalWingRootBaySides"
+    },
+    {
+      "g": 0.07142857142857142,
+      "source": "TandemTruckR",
+      "target": "ConformalWingRootBaySides"
+    },
+    {
+      "g": 0.14285714285714285,
+      "source": "TandemTruckR",
+      "target": "ConformalWingRootBaySides"
+    },
+    {
+      "g": 0.21428571428571427,
+      "source": "TandemTruckR",
+      "target": "ConformalWingRootBaySides"
+    },
+    {
+      "g": 0.2857142857142857,
+      "source": "TandemTruckR",
+      "target": "ConformalWingRootBaySides"
+    },
+    {
+      "g": 0.3571428571428571,
+      "source": "TandemTruckL",
+      "target": "ConformalWingRootBaySides"
+    },
+    {
+      "g": 0.3571428571428571,
+      "source": "TandemTruckR",
+      "target": "ConformalWingRootBaySides"
+    }
+  ],
+  "candidate_contacts": 2,
+  "new_contacts": [],
+  "scope": "gear against modified liner and doors; not a full clearance certification"
+}
