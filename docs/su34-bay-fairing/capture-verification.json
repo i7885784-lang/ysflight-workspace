@@ -1,0 +1,16 @@
+{
+  "before": {
+    "frames": 62,
+    "native_gear_min": 0.0,
+    "native_gear_max": 1.0,
+    "render_override_disabled": true,
+    "complete_extend_retract_each_view": true
+  },
+  "after": {
+    "frames": 62,
+    "native_gear_min": 0.0,
+    "native_gear_max": 1.0,
+    "render_override_disabled": true,
+    "complete_extend_retract_each_view": true
+  }
+}

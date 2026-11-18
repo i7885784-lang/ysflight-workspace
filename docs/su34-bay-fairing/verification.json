@@ -1,0 +1,20 @@
+{
+  "baseline_sha256": "b26826d172ecb83d5f6063c4c620004cecaf1d5b5a6da4799ea40c1f2d3f257c",
+  "candidate_sha256": "0321f48f8a17fb3e7c3c9e1f85880163f0a774e3c8281cc779ae982e5c5af46d",
+  "changed_meshes": [
+    "ConformalWingRootBaySides.srf"
+  ],
+  "removed_artificial_frame_nodes": [
+    "MainBaySeals",
+    "InternalSeamSeatMain"
+  ],
+  "all_retained_node_states_exact": true,
+  "all_gear_meshes_exact": true,
+  "source_airframe_wings_intakes_and_other_meshes_exact": true,
+  "fairing_blend_extent_m": {
+    "lateral": 0.32,
+    "longitudinal": 0.64
+  },
+  "faces": 2556,
+  "stage": "isolated prototype; no stable integration"
+}
