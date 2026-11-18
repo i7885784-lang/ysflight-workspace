@@ -21,6 +21,7 @@ jobs:
           100c0754af616578b9fe30555c2ba3d7c672e67d213fd47ad21ca71ebd468f8a  update.zip
           EOF
           python3 - <<'PY'
+          import copy
           import hashlib
           import json
           import struct
@@ -49,7 +50,7 @@ jobs:
               with zipfile.ZipFile(output,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as archive:
                   for info in base.infolist():
                       if info.filename not in replacement:
-                          archive.writestr(info,base.read(info))
+                          archive.writestr(copy.copy(info),base.read(info))
                   for name,data in replacement.items():
                       archive.writestr(name,data)
               with zipfile.ZipFile(output) as archive:
