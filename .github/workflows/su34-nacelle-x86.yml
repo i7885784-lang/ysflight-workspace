@@ -1,0 +1,70 @@
+name: Package Su-34 for 32-bit Windows
+on:
+  push:
+    branches: [study/su34-bay-fairing-20261118]
+    paths: [.github/workflows/su34-nacelle-x86.yml]
+permissions:
+  contents: write
+jobs:
+  package:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - run: |
+          set -euo pipefail
+          gh api repos/$GITHUB_REPOSITORY/releases/assets/759840221 -H 'Accept: application/octet-stream' > base32.zip
+          gh api repos/$GITHUB_REPOSITORY/releases/assets/762537186 -H 'Accept: application/octet-stream' > update.zip
+          sha256sum -c <<'EOF'
+          03dd6f05031b98d9a25b663f6dc7d47a952e4a65142ad93bf15c511c013c43f3  base32.zip
+          100c0754af616578b9fe30555c2ba3d7c672e67d213fd47ad21ca71ebd468f8a  update.zip
+          EOF
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import struct
+          import zipfile
+
+          output = 'Su34_Nacelle_Preview_Windows_x86.zip'
+          model_digest = '2086f5311f5caf2a7d2c73e61f09f31ddbc4dd37f79606d50854a4dd1b46688a'
+          exe_path = 'runtime/ysflight32_gl1.exe'
+          launcher = 'runtime/Play_Su34_Current.bat'
+          dat_path = 'runtime/aircraft/su34.dat'
+          model_paths = ['runtime/aircraft/su34.dnm', 'runtime/aircraft/su34_coarse.dnm']
+          with zipfile.ZipFile('base32.zip') as base, zipfile.ZipFile('update.zip') as update:
+              replacement = {name: update.read(name) for name in model_paths}
+              passport_path = 'runtime/ARCHITECTURE.json'
+              passport = json.loads(base.read(passport_path))
+              passport.update(model_sha256=model_digest, current_change='Shallower nacelle relief preview',
+                              native_windows_launch_verified=False, current_model_native_windows_launch_retested=False,
+                              current_visual_review='Preview recorded in x64 Wine; x86 package and PE verified',
+                              current_model_visual_check='Preview recorded in x64 Wine; x86 package and PE verified')
+              replacement[passport_path] = json.dumps(passport, indent=2).encode()
+              replacement['runtime/SOURCE_DOWNLOADS.txt'] = update.read('runtime/SOURCE_DOWNLOADS.txt')
+              replacement['START_HERE_RU.txt'] = (
+                  'Су-34, пробная сборка для Windows 32-бит. Распакуйте ZIP полностью и запустите '
+                  'runtime/Play_Su34_Current.bat. Выемки мотогондол сглажены.\r\n'
+              ).encode('utf-8-sig')
+              with zipfile.ZipFile(output,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as archive:
+                  for info in base.infolist():
+                      if info.filename not in replacement:
+                          archive.writestr(info,base.read(info))
+                  for name,data in replacement.items():
+                      archive.writestr(name,data)
+              with zipfile.ZipFile(output) as archive:
+                  assert archive.testzip() is None
+                  for name in model_paths:
+                      assert hashlib.sha256(archive.read(name)).hexdigest()==model_digest
+                  for name in [exe_path,launcher,dat_path]:
+                      assert archive.read(name)==base.read(name)
+                  exe=archive.read(exe_path)
+                  pe=struct.unpack_from('<I',exe,0x3c)[0]
+                  assert exe[pe:pe+4]==b'PE\0\0'
+                  assert struct.unpack_from('<H',exe,pe+4)[0]==0x14c
+                  assert struct.unpack_from('<H',exe,pe+24)[0]==0x10b
+                  assert b'ysflight32_gl1.exe' in archive.read(launcher)
+          print('Verified complete x86 ZIP, original PE32 and exact preview model')
+          PY
+          sha256sum Su34_Nacelle_Preview_Windows_x86.zip
+          gh release upload su34-nacelle-preview-20261118 Su34_Nacelle_Preview_Windows_x86.zip --repo "$GITHUB_REPOSITORY"
