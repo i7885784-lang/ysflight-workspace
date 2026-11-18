@@ -1,0 +1,312 @@
+name: Package Su-34 nacelle preview
+on:
+  push:
+    branches: [study/su34-bay-fairing-20261118]
+    paths: [.github/workflows/su34-nacelle-preview.yml]
+permissions:
+  contents: write
+jobs:
+  package:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy==2.3.5 scipy==1.17.0 shapely==2.2.0 Pillow
+      - run: |
+          set -euo pipefail
+          gh api repos/$GITHUB_REPOSITORY/releases/assets/759840503 -H 'Accept: application/octet-stream' > base.zip
+          gh api repos/$GITHUB_REPOSITORY/releases/assets/759840648 -H 'Accept: application/octet-stream' > sources.zip
+          sha256sum -c <<'EOF'
+          9a19a19ff1f31e58ac090eaa42d8e302983b1f5fce9c2f6f9b59b0eae46a4a05  base.zip
+          f7d59b9d6f110f778f99c69d1647263e9845f8c5e50cdd407c45ce3f17e1b186  sources.zip
+          EOF
+          unzip -p base.zip runtime/aircraft/su34.dnm > baseline.dnm
+          cat > top-trim.py <<'END_SOURCE'
+          from pathlib import Path
+          import sys,copy,json,hashlib
+          import numpy as np
+          from scipy.spatial import cKDTree
+          from shapely.geometry import Polygon,Point
+          from shapely.ops import unary_union
+          from shapely import constrained_delaunay_triangles,affinity
+          import dnm
+          from mesh import Mesh
+          from envelope import Envelope
+          r=Path('.');base=Path('baseline.dnm');p,ns=dnm.read(base);bp=copy.deepcopy(p);bn=copy.deepcopy(ns);lookup={dnm.name(n):n for n in ns}
+          body=dnm.mesh(p[dnm.fil(lookup['SourceAirframe'])]);env=Envelope([{'v':body.v,'f':[f[0] for f in body.f]}],step=.018)
+          centers=np.array([np.array([body.v[i] for i in ids]).mean(0) for ids,_,_ in body.f]);colors=np.array([col for _,col,_ in body.f]);tree=cKDTree(centers)
+          # Use the actual CLOSED door outlines. Preserve meshes and every state.
+          shapes=[]
+          for side in ['L','R']:
+           polys=[]
+           for kind in ['Wheel','Strut']:
+            m=dnm.mesh(p[dnm.fil(lookup['OriginalSideDoor'+side+kind])]);v=np.array(m.v)
+            for ids,_,_ in m.f:
+             q=Polygon(v[ids][:,[0,2]])
+             if q.is_valid and q.area>1e-9:polys.append(q)
+           shape=unary_union(polys).buffer(.001,join_style=2).simplify(.007,preserve_topology=True)
+           # Remove narrow accidental cavities in the door projection while keeping the
+           # perimeter fitted to the existing closing panels.
+           if shape.geom_type=='MultiPolygon':shape=max(shape.geoms,key=lambda x:x.area)
+           shape=Polygon(shape.exterior)
+           shapes.append(shape)
+          door_objects=[]
+          for name,n in lookup.items():
+           if name.startswith('OriginalSideDoor'):
+            m=dnm.mesh(bp[dnm.fil(n)]);door_objects.append({'v':m.v,'f':[f[0] for f in m.f]})
+          door_env=Envelope(door_objects,step=.004)
+          def door_bounds(x,z):return door_env.bounds(np.c_[x,np.zeros(len(x)),z])[:2]
+          new=Mesh()
+          # Outer skirt is spread over 0.32 m laterally / 0.64 m longitudinally,
+          # replacing vertical slabs with a faceted fairing bonded into nearby skin.
+          for opening in shapes:
+           shape=opening.buffer(.025,join_style=1,quad_segs=3)
+           scaled=affinity.scale(shape,xfact=1,yfact=.5,origin=(0,0));rings=[scaled.buffer(d,join_style=1,quad_segs=3) for d in [0,.09,.21,.32]]
+           for inner,outer in zip(rings[:-1],rings[1:]):
+            band=outer.difference(inner)
+            for tri in constrained_delaunay_triangles(band).geoms:
+             q=np.array(tri.exterior.coords)[:-1];x=q[:,0];z=q[:,1]*2
+             d=np.array([scaled.distance(Point(a)) for a in q]);u=np.clip(d/.32,0,1);blend=u*u*(3-2*u)
+             floor=door_bounds(x,z)[0]-.006
+             points=np.c_[x,np.zeros(len(x)),z];bottom,top,_=env.bounds(points)
+             join=np.where(bottom>floor+.065,bottom,top)-.006
+             join=np.minimum(np.maximum(join,floor+.075),top-.025)
+             y=floor+(join-floor)*blend;v=np.c_[x,y,z]
+             normal=np.cross(v[1]-v[0],v[2]-v[0]);
+             if normal[1]>0:v=v[::-1]
+             _,k=tree.query(v.mean(0));col=tuple(int(a) for a in colors[k]);new.face(v,col);new.face(v[::-1],(83,101,112))
+          doorpoints=np.concatenate([np.array(dnm.mesh(bp[dnm.fil(lookup[name])]).v) for name in lookup if name.startswith('OriginalSideDoor')]);door_tree=cKDTree(doorpoints[:,[0,2]])
+          def seat_height(q):
+           return door_bounds(q[:,0],q[:,1])[1]+.015
+          # A thin recessed return lip closes the visible seam behind the existing
+          # panel edge. It replaces the old exposed thick rectangular spacer blocks.
+          for shape in shapes:
+           band=shape.buffer(.027,join_style=1,quad_segs=3).difference(shape.buffer(-.018,join_style=2))
+           for tri in constrained_delaunay_triangles(band).geoms:
+            q=np.array(tri.exterior.coords)[:-1];y=seat_height(q)
+            v=np.c_[q[:,0],y,q[:,1]];new.face(v,(75,94,109));new.face(v[::-1],(75,94,109))
+          # Join the thin recessed return to the relieved fairing mouth.
+          for shape in shapes:
+           ring=np.array(shape.buffer(.026,join_style=1,quad_segs=3).exterior.coords)
+           for a,b in zip(ring[:-1],ring[1:]):
+            fa,fb=door_bounds(np.array([a[0],b[0]]),np.array([a[1],b[1]]))[0]
+            ha,hb=seat_height(np.array([a,b]));q=np.array([[a[0],fa-.006,a[1]],[b[0],fb-.006,b[1]],[b[0],hb,b[1]],[a[0],ha,a[1]]])
+            new.face(q,(75,94,109));new.face(q[::-1],(75,94,109))
+          # Only remove the artificial thick seam blocks around these two bays.
+          removed=['MainBaySeals','InternalSeamSeatMain'];ns=[n for n in ns if dnm.name(n) not in removed]
+          p[dnm.fil(lookup['ConformalWingRootBaySides'])]=new.srf()
+          active={dnm.fil(n) for n in ns};p={k:v for k,v in p.items() if k in active};dnm.write(r/'top-trim.dnm',p,ns)
+          changed=[k for k in p if p[k]!=bp[k]]
+          assert changed==['ConformalWingRootBaySides.srf'],changed
+          assert ns==[n for n in bn if dnm.name(n) not in removed]
+          report={'baseline_sha256':hashlib.sha256(base.read_bytes()).hexdigest(),'candidate_sha256':hashlib.sha256((r/'top-trim.dnm').read_bytes()).hexdigest(),'changed_meshes':changed,'removed_artificial_frame_nodes':removed,'all_retained_node_states_exact':True,'all_gear_meshes_exact':True,'source_airframe_wings_intakes_and_other_meshes_exact':True,'fairing_blend_extent_m':{'lateral':.32,'longitudinal':.64},'faces':len(new.f),'stage':'isolated prototype; no stable integration'}
+          (r/'top-trim-verification.json').write_text(json.dumps(report,indent=2));print(json.dumps(report,indent=2))
+          END_SOURCE
+          cat > smooth-scoop.py <<'END_SOURCE'
+          from pathlib import Path
+          import sys
+          import numpy as np
+          sys.path.insert(0,'/workspace/work/su34-intake-front/src')
+          import dnm
+
+          root = Path(__file__).resolve().parent
+          packs, nodes = dnm.read(root/'top-trim.dnm')
+          lookup = {dnm.name(n): n for n in nodes}
+          key = dnm.fil(lookup['SourceAirframe'])
+          body = dnm.mesh(packs[key])
+          vertices = np.array(body.v)
+          x, y, z = vertices.T
+          def ease(t):
+              t = np.clip(t, 0, 1)
+              return t*t*(3-2*t)
+
+          # The face-ID render places the scoop in this strip of the outer skin.
+          # Feather the change into the front, rear and lower edges of the nacelle.
+          weight = (ease((z+1.58)/.83)*ease((.66-z)/.35)
+                    *ease((y+.70)/.33)*ease((-.19-y)/.09)
+                    *ease((abs(x)-1.01)/.18))
+          offset = np.sign(x)*np.clip(1.528-abs(x),0,.29)*weight
+          body.v=list(map(tuple,vertices+np.c_[.45*offset,np.zeros((len(offset),2))]))
+          packs[key]=body.srf()
+          dnm.write(root/'scoop-smoothed.dnm',packs,nodes)
+          END_SOURCE
+          cat > package.py <<'END_SOURCE'
+          from pathlib import Path
+          import hashlib,json,zipfile
+          root=Path('.')
+          local=Path('.')
+          def sha(data):
+              return hashlib.sha256(data).hexdigest()
+          model=(root/'scoop-smoothed.dnm').read_bytes()
+          model_sha='2086f5311f5caf2a7d2c73e61f09f31ddbc4dd37f79606d50854a4dd1b46688a'
+          assert sha(model)==model_sha
+          models=['runtime/aircraft/su34.dnm','runtime/aircraft/su34_coarse.dnm']
+          readme="""Су-34. Пробная версия со сглаженной выемкой мотогондол.
+          Полная сборка Windows x64. Распакуйте архив и запустите runtime/Play_Su34_Current.bat.
+          Для обновления прежней сборки Су-34 от 17 ноября распакуйте архив обновления поверх неё с заменой файлов.
+          В 201 проверенном положении правка выемки не добавила пересечений. Прежние контакты с окантовкой ниши остаются.
+          Видео: https://raw.githubusercontent.com/i7885784-lang/ysflight-workspace/0383b413af0e68f319a85bf504596429026add94/docs/su34-bay-fairing/Su34_Nacelle_Three_Views.mp4
+          """.encode('utf-8-sig')
+          with zipfile.ZipFile('base.zip') as base:
+              assert sha(base.read(models[0]))=='b26826d172ecb83d5f6063c4c620004cecaf1d5b5a6da4799ea40c1f2d3f257c'
+              assert 'runtime/Play_Su34_Current.bat' in base.namelist()
+              arch=json.loads(base.read('runtime/ARCHITECTURE.json'))
+              arch.update(model_sha256=model_sha,current_change='Shallower nacelle relief and gear bay fairing preview',native_windows_launch_verified=False)
+              replacement={name:model for name in models}
+              replacement['runtime/ARCHITECTURE.json']=json.dumps(arch,indent=2).encode()
+              replacement['START_HERE_RU.txt']=readme
+              replacement['runtime/SOURCE_DOWNLOADS.txt']=b'Su34_Nacelle_Preview_CorrespondingSources.zip (same draft release)\n'
+              for file,full in [('Su34_Nacelle_Preview_Windows_x64.zip',True),('Su34_Nacelle_Preview_Update.zip',False)]:
+                  with zipfile.ZipFile(file,'w',zipfile.ZIP_DEFLATED,6) as out:
+                      if full:
+                          for info in base.infolist():
+                              if info.filename not in replacement:
+                                  out.writestr(info.filename,base.read(info))
+                      for name,data in replacement.items():
+                          out.writestr(name,data)
+                  with zipfile.ZipFile(file) as check:
+                      assert check.testzip() is None
+                      assert all(sha(check.read(p))==model_sha for p in models)
+                      if full:
+                          for name in ('runtime/ysflight64_gl1.exe','runtime/Play_Su34_Current.bat','runtime/aircraft/su34.dat'):
+                              assert check.read(name)==base.read(name)
+          with zipfile.ZipFile('sources.zip') as old, zipfile.ZipFile('Su34_Nacelle_Preview_CorrespondingSources.zip','w',zipfile.ZIP_DEFLATED,6) as out:
+              for info in old.infolist():
+                  out.writestr(info.filename,old.read(info))
+              for name in ['top-trim.py','smooth-scoop.py']:
+                  out.write(local/name,'su34-nacelle-preview/'+name)
+              for name in ['top-trim.dnm','scoop-smoothed.dnm']:
+                  out.write(root/name,'su34-nacelle-preview/'+name)
+          with zipfile.ZipFile('Su34_Nacelle_Preview_CorrespondingSources.zip') as check:
+              assert check.testzip() is None
+              assert sha(check.read('su34-nacelle-preview/scoop-smoothed.dnm'))==model_sha
+          END_SOURCE
+          cat > envelope.py <<'END_SOURCE'
+          from pathlib import Path
+          from shapely.geometry import Polygon
+          from shapely.ops import unary_union
+          import numpy as np
+          from scipy.ndimage import map_coordinates,distance_transform_edt
+          class Envelope:
+           def __init__(self,objects,step=.025):
+            self.objects=objects
+            points=np.concatenate([np.array(o['v']) for o in objects]);self.low=points[:,[0,2]].min(0)-.05;self.step=step;self.shape=np.ceil((points[:,[0,2]].max(0)-self.low+.05)/step).astype(int)+1
+            projected=[]
+            self.bottom=np.full(self.shape,np.inf);self.top=np.full(self.shape,-np.inf)
+            for o in objects:
+             v=np.array(o['v'])
+             for f in o['f']:
+              for k in range(1,len(f)-1):
+               p=v[[f[0],f[k],f[k+1]]];A=np.array([[p[0,0]-p[2,0],p[1,0]-p[2,0]],[p[0,2]-p[2,2],p[1,2]-p[2,2]]]);det=np.linalg.det(A)
+               if abs(det)<1e-10:continue
+               projected.append(Polygon(p[:,[0,2]]))
+               lo=np.maximum(np.floor((p[:,[0,2]].min(0)-self.low)/step).astype(int),0);hi=np.minimum(np.ceil((p[:,[0,2]].max(0)-self.low)/step).astype(int),self.shape-1)
+               ii,jj=np.meshgrid(np.arange(lo[0],hi[0]+1),np.arange(lo[1],hi[1]+1),indexing='ij');x=self.low[0]+ii*step;z=self.low[1]+jj*step
+               u=(A[1,1]*(x-p[2,0])-A[0,1]*(z-p[2,2]))/det;w=(-A[1,0]*(x-p[2,0])+A[0,0]*(z-p[2,2]))/det;mask=(u>=-1e-5)&(w>=-1e-5)&(u+w<=1.00001)
+               y=u*p[0,1]+w*p[1,1]+(1-u-w)*p[2,1];i=ii[mask];j=jj[mask];val=y[mask]
+               self.bottom[i,j]=np.minimum(self.bottom[i,j],val);self.top[i,j]=np.maximum(self.top[i,j],val)
+            self.footprint=unary_union(projected).buffer(0)
+            valid=np.isfinite(self.bottom);self.valid=valid.astype(float);dist,idx=distance_transform_edt(~valid,return_indices=True);self.distance=dist*step
+            self.bottom[~valid]=self.bottom[tuple(idx[:,~valid])];self.top[~valid]=self.top[tuple(idx[:,~valid])]
+           def bounds(self,p):
+            co=((np.array(p)[:,[0,2]]-self.low)/self.step).T
+            return tuple(map_coordinates(a,co,order=1,mode='nearest') for a in [self.bottom,self.top,self.distance])
+           def residual(self,p,clearance=.015):
+            b,t,d=self.bounds(p);return np.stack([np.maximum(b+clearance-p[:,1],0),np.maximum(p[:,1]+clearance-t,0),np.maximum(d-.015,0)*4],1)
+          END_SOURCE
+          cat > dnm.py <<'END_SOURCE'
+          from pathlib import Path
+          import re,math
+          from mesh import Mesh,pack_dnm
+
+          def read(path):
+           ls=Path(path).read_text().splitlines();packs={};i=2
+           while i<len(ls):
+            if not ls[i].strip():i+=1;continue
+            if not ls[i].startswith('PCK '):break
+            _,name,n=ls[i].split();n=int(n);packs[name]=ls[i+1:i+1+n];i+=n+1
+           text='\n'.join(ls[i:]);nodes=[]
+           for block in re.split(r'(?m)^SRF ',text):
+            if not block.strip() or block.strip()=='END':continue
+            ls=('SRF '+block).splitlines();end=ls.index('END');nodes.append(ls[:end+1])
+           return packs,nodes
+
+          def mesh(lines):
+           m=Mesh();i=1
+           while i<len(lines) and lines[i]!='F':
+            if lines[i].startswith('V '):m.v.append(tuple(map(float,lines[i].split()[1:4])))
+            i+=1
+           while i<len(lines):
+            if lines[i]!='F':i+=1;continue
+            j=lines.index('E',i);data=lines[i:j];ids=list(map(int,next(x[2:] for x in data if x.startswith('V ')).split()));col=tuple(map(int,next(x[2:] for x in data if x.startswith('C ')).split()));m.f.append((ids,col,'B' in data));i=j+1
+           return m
+
+          def write(path,packs,nodes):Path(path).write_text(pack_dnm(list(packs.items()),sum(nodes,[])))
+          def name(n):return n[0][5:].strip('"')
+          def fil(n):return next(s[4:] for s in n if s.startswith('FIL ')).strip('"')
+          def cla(n):return int(next(s[4:] for s in n if s.startswith('CLA ')))
+          def edit(n,prefix,value):return [prefix+value if s.startswith(prefix) else s for s in n]
+          END_SOURCE
+          cat > mesh.py <<'END_SOURCE'
+          import math
+          from PIL import Image,ImageFont,ImageDraw
+          class Mesh:
+           def __init__(self):self.v=[];self.f=[]
+           def face(self,pts,c,bright=False):
+            ids=list(range(len(self.v),len(self.v)+len(pts)));self.v += [tuple(map(float,p)) for p in pts];self.f.append((ids,c,bright))
+           def box(self,x,y,z,dx,dy,dz,c):
+            p=[(x+a*dx/2,y+b*dy/2,z+d*dz/2) for a,b,d in [(-1,-1,-1),(1,-1,-1),(1,1,-1),(-1,1,-1),(-1,-1,1),(1,-1,1),(1,1,1),(-1,1,1)]]
+            for ids in [(0,3,2,1),(4,5,6,7),(0,4,7,3),(1,2,6,5),(0,1,5,4),(3,7,6,2)]:self.face([p[i] for i in ids],c)
+           def tube(self,a,b,rad,c,n=12,inner=0):
+            # General cylinder aligned with its segment.
+            d=[b[i]-a[i] for i in range(3)];ln=math.sqrt(sum(x*x for x in d));d=[x/ln for x in d];helper=(0,1,0) if abs(d[1])<.9 else (1,0,0)
+            u=[d[1]*helper[2]-d[2]*helper[1],d[2]*helper[0]-d[0]*helper[2],d[0]*helper[1]-d[1]*helper[0]];ln=math.sqrt(sum(x*x for x in u));u=[x/ln for x in u];v=[d[1]*u[2]-d[2]*u[1],d[2]*u[0]-d[0]*u[2],d[0]*u[1]-d[1]*u[0]]
+            def point(p,t,rr):return tuple(p[j]+rr*(u[j]*math.cos(t)+v[j]*math.sin(t)) for j in range(3))
+            for i in range(n):
+             t=2*math.pi*i/n;s=2*math.pi*(i+1)/n
+             self.face([point(a,t,rad),point(a,s,rad),point(b,s,rad),point(b,t,rad)],c)
+             if inner:
+              self.face([point(b,t,rad),point(b,s,rad),point(b,s,inner),point(b,t,inner)],c)
+             else:self.face([a,point(a,s,rad),point(a,t,rad)],c);self.face([b,point(b,t,rad),point(b,s,rad)],c)
+           def text(self,text,x,y,z,h,c=(212,226,222)):
+            font=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',14);bounds=font.getbbox(text);im=Image.new('L',(bounds[2]+2,19));ImageDraw.Draw(im).text((0,-bounds[1]),text,font=font,fill=255);s=h/14
+            for j in range(im.height):
+             k=0
+             while k<im.width:
+              if im.getpixel((k,j))<110:k+=1;continue
+              start=k
+              while k<im.width and im.getpixel((k,j))>=110:k+=1
+              self.face([(x+start*s,y-j*s,z),(x+k*s,y-j*s,z),(x+k*s,y-(j+1)*s,z),(x+start*s,y-(j+1)*s,z)],c,True)
+           def srf(self):
+            ls=['SURF']+['V %.6f %.6f %.6f'%v for v in self.v]
+            for ids,c,b in self.f:
+             pts=[self.v[i] for i in ids];n=[0.,0.,0.]
+             for aa,bb in zip(pts,pts[1:]+pts[:1]):
+              n[0]+=(aa[1]-bb[1])*(aa[2]+bb[2]);n[1]+=(aa[2]-bb[2])*(aa[0]+bb[0]);n[2]+=(aa[0]-bb[0])*(aa[1]+bb[1])
+             l=math.sqrt(sum(x*x for x in n));n=[x/l if l>1e-14 else 0 for x in n]
+             ls+=['F','C '+' '.join(map(str,c)),'N %.6f %.6f %.6f'%tuple(n),'V '+' '.join(map(str,ids))]+(['B'] if b else [])+['E']
+            return ls+['E']
+           def merge(self,m):
+            offset=len(self.v);self.v+=m.v;self.f += [([i+offset for i in ids],c,b) for ids,c,b in m.f]
+           def shift(self,x,y,z):self.v=[(a+x,b+y,c+z) for a,b,c in self.v];return self
+
+          def node(name,file,cla=99,canopy=False,gear=False):
+           ls=[f'SRF "{name}"',f'FIL {file}',f'CLA {cla}', 'NST 2' if canopy or gear else 'NST 1','STA 0 0 0 0 0 0 '+('0' if gear else '1')]
+           if canopy:ls+=['STA 0 0 0 0 6372 0 1']
+           if gear:ls+=['STA 0 0 0 0 0 0 1']
+           ls+=['POS 0 1.35 3.0 0 0 0 1' if canopy else 'POS 0 0 0 0 0 0 1','CNT 0 0 0','PAX 1 0 0','REL DEP','NCH 0','END'];return ls
+
+          def pack_dnm(packs,nodes):
+           ls=['DYNAMODEL','DNMVER 2']
+           for name,lines in packs:ls += [f'PCK {name} {len(lines)}']+lines
+           return '\n'.join(ls+nodes+['END'])+'\n'
+          END_SOURCE
+          python top-trim.py
+          python smooth-scoop.py
+          python package.py
+          sha256sum Su34*.zip > SHA256SUMS.txt
+          gh release upload su34-nacelle-preview-20261118 Su34*.zip SHA256SUMS.txt --repo "$GITHUB_REPOSITORY"
