@@ -1,0 +1,27 @@
+name: Deliver reviewed Su34 preview ZIP
+on:
+  workflow_dispatch:
+    inputs:
+      patch:
+        description: Private compressed geometry delta (never log)
+        required: true
+        type: string
+      model_sha:
+        description: Reviewed model SHA256
+        required: true
+        type: string
+permissions:
+  contents: write
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install Pillow
+      - name: Recreate and upload verified private draft packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python delivery-code/deliver.py
