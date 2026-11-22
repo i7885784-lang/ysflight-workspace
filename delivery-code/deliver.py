@@ -10,7 +10,7 @@ with zipfile.ZipFile(r/'sources.zip') as z:
 sys.path.insert(0,str(r.resolve()));import dnm
 event=json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text());raw=event['inputs']['patch'];patch=json.loads(zlib.decompress(base64.b64decode(raw)))
 with zipfile.ZipFile(r/'base.zip') as z:(r/'base.dnm').write_bytes(z.read('runtime/aircraft/su34.dnm'))
-p,ns=dnm.read(r/'base.dnm');m=dnm.mesh(p['ConformalWingRootBaySides.srf']);keys=list(dict.fromkeys(m.v));assert len(keys)==len(patch['fairing']);mapping=dict(zip(keys,map(tuple,patch['fairing'])));m.v=[mapping[v] for v in m.v];p['ConformalWingRootBaySides.srf']=m.srf()
+p,ns=dnm.read(r/'base.dnm');m=dnm.mesh(p['ConformalWingRootBaySides.srf']);keys=list(dict.fromkeys(m.v));assert len(keys)==len(patch['fairing']);mapping=dict(zip(keys,map(tuple,patch['fairing'])));m.v=[mapping[v] for v in m.v];normals=iter(patch['fairing_normals']);p['ConformalWingRootBaySides.srf']=[next(normals) if s.startswith('N ') else s for s in m.srf()]
 m=dnm.mesh(p['SourceAirframe.srf'])
 for points,color,bright in patch['append']:m.face(points,tuple(color),bright)
 p['SourceAirframe.srf']=m.srf();dnm.write(r/'su34.dnm',p,ns);model=(r/'su34.dnm').read_bytes()
