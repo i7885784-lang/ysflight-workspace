@@ -7,7 +7,7 @@ def run(a,**kw):return subprocess.run(list(map(str,a)),check=True,**kw)
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def download(asset,p):
     with p.open('wb') as f:run(['gh','api',f'repos/{repo}/releases/assets/{asset}','-H','Accept: application/octet-stream'],stdout=f)
-release=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/releases/454987447'],text=True));assert release['draft']
+release=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/releases/454987447']));assert release['draft']
 assets={a['name']:a['id'] for a in release['assets']}
 download(assets['Su34_QuickTest_Windows_32bit.zip'],r/'original-game.zip');download(assets['Su34_QuickTest_CorrespondingSources.zip'],r/'original-sources.zip');download(assets['manifest.json'],r/'original-manifest.json')
 m=json.loads((r/'original-manifest.json').read_text());assert sha(r/'original-game.zip')==m['game_sha256'];assert sha(r/'original-sources.zip')==m['sources_sha256']
