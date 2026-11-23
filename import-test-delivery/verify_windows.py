@@ -11,7 +11,7 @@ release=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/releases/4
 assets={a['name']:a['id'] for a in release['assets']}
 download(assets['Su34_QuickTest_Windows_32bit.zip'],r/'original-game.zip');download(assets['Su34_QuickTest_CorrespondingSources.zip'],r/'original-sources.zip');download(assets['manifest.json'],r/'original-manifest.json')
 m=json.loads((r/'original-manifest.json').read_text());assert sha(r/'original-game.zip')==m['game_sha256'];assert sha(r/'original-sources.zip')==m['sources_sha256']
-batch=b'@echo off\r\ncd /d "%~dp0runtime"\r\n"%CD%\\ysflight32_gl1.exe" -userdir "%~dp0user" -configdir "%CD%\\config" -script Start_Su34_Import.script\r\n'
+batch=b'@echo off\r\nif not exist "%~dp0user" mkdir "%~dp0user"\r\ncd /d "%~dp0runtime"\r\n"%CD%\\ysflight32_gl1.exe" -userdir "%~dp0user" -configdir "%CD%\\config" -script Start_Su34_Import.script\r\n'
 with zipfile.ZipFile(r/'original-game.zip') as z:assert z.testzip() is None;z.extractall(r/'test')
 (r/'test/PLAY_SU34.bat').write_bytes(batch)
 download_url='https://github.com/pal1000/mesa-dist-win/releases/download/26.3.0/mesa3d-26.3.0-release-msvc.7z'
