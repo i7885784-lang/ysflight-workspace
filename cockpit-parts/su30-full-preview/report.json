@@ -1,0 +1,17 @@
+{
+  "status": "static full aircraft assembly preview, cockpit development incomplete",
+  "new_panel_parts": 88,
+  "front_displays": 3,
+  "display_buttons": 72,
+  "upper_panel_keys": 24,
+  "upper_panel": "approximate placement fitted to existing aircraft",
+  "hud": "static glass and frame",
+  "exterior_non_interior_parts_exact": true,
+  "source_node_transforms_exact": true,
+  "matching_added_parts_in_cockpit_and_exterior": true,
+  "test": "64bit Windows OpenGL executable under Wine; three game views inspected",
+  "model_sha256": {
+    "su30sm.dnm": "4114c91d387974ad6227b6fb6a280a90c96f89d3d5380c9353a0b7bddc00554e",
+    "su30smcockpit.dnm": "0c9081e865a6b0f547ef1b34e906a6527f1bf0face2430c0dd3f12ecbe5578ed"
+  }
+}
