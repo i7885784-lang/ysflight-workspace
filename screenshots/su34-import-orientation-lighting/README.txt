@@ -1,0 +1,2 @@
+Real in-game screenshots after OBJ-to-engine coordinate basis correction and linear-light sRGB material shading. Source geometry, UVs and texture pixels unchanged. Static import preview: cockpit controls and mechanism animation are not implemented. Three matching camera views compared with previous checkpoint.
+Model: Russian Su-34 "35 Red", 42manako, https://sketchfab.com/3d-models/russian-su-34-35-red-4d11c7ff85c74c7a91d623d1c0c40594 . Page indicates CC BY 4.0. Original model files are not included.

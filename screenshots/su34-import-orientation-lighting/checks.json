@@ -1,0 +1,33 @@
+{
+  "source_mesh_sha256": "c8006b21608e12df82542304888a63e69c6f200195a9d5cf0446375d86e72e92",
+  "source_mesh_unchanged": true,
+  "source_uvs_and_texture_pixels_unchanged": true,
+  "basis_change": {
+    "matrix": [
+      -1,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      1
+    ],
+    "orthogonal": true,
+    "distances_and_proportions_preserved": true,
+    "front_face_compensation": "CW -> CCW"
+  },
+  "camera_engine": [
+    -0.49,
+    1.12,
+    7.6
+  ],
+  "camera_in_obj_basis": [
+    0.49,
+    1.12,
+    7.6
+  ],
+  "lighting": "sRGB albedo decoded before lighting and encoded before legacy framebuffer output; normal/specular/AO/alpha maps remain linear",
+  "scope": "only the imported test-aircraft renderer; no game ZIP requested"
+}

@@ -1,0 +1,32 @@
+--- a/YSFLIGHT/src/graphics/gl/fsimportgl.cpp
++++ b/YSFLIGHT/src/graphics/gl/fsimportgl.cpp
+@@ -77,6 +77,8 @@
+  uniform sampler2D diffuseMap,normalMap,specularMap,aoMap,alphaMap;
+  uniform bool hasDiffuse,hasNormal,hasSpecular,hasAo,hasAlpha;
+  uniform vec3 kd;uniform float opacity;
++ vec3 srgbToLinear(vec3 c){return mix(c/12.92,pow((c+0.055)/1.055,vec3(2.4)),step(vec3(0.04045),c));}
++ vec3 linearToSrgb(vec3 c){c=max(c,vec3(0.0));return mix(c*12.92,1.055*pow(c,vec3(1.0/2.4))-0.055,step(vec3(0.0031308),c));}
+  void main(){
+  vec4 color=hasDiffuse?texture2D(diffuseMap,uv):vec4(kd,1.0);
+  float a=color.a*opacity;if(hasAlpha)a*=texture2D(alphaMap,uv).r;if(a<0.025)discard;
+@@ -88,7 +90,7 @@
+  vec3 L=normalize(gl_LightSource[0].position.xyz);float light=0.40+0.60*max(dot(N,L),0.0);
+  float ao=hasAo?texture2D(aoMap,uv).r:1.0;float spec=hasSpecular?texture2D(specularMap,uv).r:0.0;
+  vec3 H=normalize(L+normalize(-eyePosition));float shine=pow(max(dot(N,H),0.0),32.0)*spec*0.18;
+- gl_FragColor=vec4(color.rgb*light*(0.55+0.45*ao)+vec3(shine),a);
++ gl_FragColor=vec4(linearToSrgb(srgbToLinear(color.rgb)*light*(0.55+0.45*ao)+vec3(shine)),a);
+  }
+  )GLSL";
+  GLuint vsId=shader(GL_VERTEX_SHADER,vs),fsId=shader(GL_FRAGMENT_SHADER,fs);if(!vsId||!fsId)return false;
+@@ -120,7 +122,10 @@
+  glPushAttrib(GL_ALL_ATTRIB_BITS);glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
+  glMatrixMode(GL_MODELVIEW);glPushMatrix();glLoadIdentity();glScaled(1,1,-1);
+  YsMatrix4x4 model;model.Translate(pos);model.RotateXZ(att.h());model.RotateZY(att.p());model.RotateXY(att.b());YsMatrix4x4 mv=view*model;double matrix[16];mv.GetOpenGlCompatibleMatrix(matrix);glMultMatrixd(matrix);
+- glEnable(GL_DEPTH_TEST);glDepthFunc(GL_LEQUAL);glEnable(GL_CULL_FACE);glFrontFace(GL_CW);
++ // OBJ's right-handed, Y-up, nose+Z basis -> YSFlight's left-handed basis.
++ // Keep source vertices/UVs intact; transform positions AND normals together.
++ glScaled(-1,1,1);
++ glEnable(GL_DEPTH_TEST);glDepthFunc(GL_LEQUAL);glEnable(GL_CULL_FACE);glFrontFace(GL_CCW);
+  glDisable(GL_LIGHTING);glDisable(GL_ALPHA_TEST);pUseProgram(program);
+  pBindBuffer(GL_ARRAY_BUFFER,vbo);pBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ibo);
+  glEnableClientState(GL_VERTEX_ARRAY);glEnableClientState(GL_NORMAL_ARRAY);pClientActiveTexture(GL_TEXTURE0);glEnableClientState(GL_TEXTURE_COORD_ARRAY);
