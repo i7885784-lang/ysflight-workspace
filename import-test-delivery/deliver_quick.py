@@ -29,6 +29,12 @@ elif sys.argv[1]=='package':
     rt=root/'game/runtime';package=root/'Su34_QuickTest_Windows_32bit';dst=package/'runtime';dst.mkdir(parents=True,exist_ok=True)
     for n in ['config','language','licenses','document','ground','scenery','sound','misc']:
         if (rt/n).is_dir():shutil.copytree(rt/n,dst/n,dirs_exist_ok=True)
+    option=dst/'config/option.cfg'
+    opts=option.read_text()
+    opts=re.sub(r'^OPENDEMO .*$', 'OPENDEMO FALSE',opts,flags=re.M)
+    opts=re.sub(r'^LANGUAGE .*$', 'LANGUAGE "FILE:ru.uitxt"',opts,flags=re.M)
+    opts=re.sub(r'^FONTHEIGHT .*$', 'FONTHEIGHT 18',opts,flags=re.M)
+    option.write_text(opts)
     for n in ['20181124','readme.txt','ereadme.txt','jreadme.txt']:
         if (rt/n).is_file():shutil.copyfile(rt/n,dst/n)
     air=dst/'aircraft';air.mkdir(exist_ok=True)
@@ -41,7 +47,7 @@ elif sys.argv[1]=='package':
     plugin=dst/'plugin';plugin.mkdir()
     for f in (root/'build32').rglob('*.dll'):shutil.copyfile(f,plugin/f.name)
     assert list(plugin.glob('*.dll'))
-    (package/'PLAY_SU34.bat').write_bytes(b'@echo off\r\ncd /d "%~dp0runtime"\r\nstart "" "ysflight32_gl1.exe" -script Start_Su34_Import.script\r\n')
+    (package/'PLAY_SU34.bat').write_bytes(b'@echo off\r\ncd /d "%~dp0runtime"\r\nstart "" "ysflight32_gl1.exe" -userdir "%~dp0user" -configdir "%CD%\\config" -script Start_Su34_Import.script\r\n')
     notice='Тест новой модели Су-34 — Windows 32-bit.\nРаспакуйте весь ZIP, затем запустите PLAY_SU34.bat. Самолёт появится в воздухе, вид из кабины.\nF1 — вид из кабины, Pause/Break — пауза, Esc — меню. Остальные клавиши см. в документации игры.\nКамера ближе к приборам, высота сохранена. Ориентация и освещение исправлены.\nЭто проба переноса: кнопки, приборы и механизмы новой модели пока статические; динамика и коллизия унаследованы от прежнего самолёта. Нужен OpenGL2.1/GLSL.\n'
     (package/'START_HERE_RU.txt').write_text(notice,encoding='utf-8-sig')
     # Keep corresponding engine source alongside the binary, without bundling model assets publicly.
