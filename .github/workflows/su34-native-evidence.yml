@@ -1,0 +1,16 @@
+name: Recover native Su34 window evidence
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preserve already captured window in draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download 45114629002 --repo i7885784-lang/ysflight-workspace --name native-su34-launch-evidence --dir evidence
+          gh release upload su34-import-quicktest-x86-20261123 evidence/Native_Windows32_Cockpit.jpg --repo i7885784-lang/ysflight-workspace --clobber
