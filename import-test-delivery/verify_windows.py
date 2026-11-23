@@ -32,13 +32,15 @@ try:
     # A Windows GUI process may not inherit cmd's redirected console handles.
     # Preserve an actual native window capture for visual review in that case.
     import_logged='IMPORT READY vertices=706104 triangles=579601 materials=15 textures=42' in text
-    elapsed=time.monotonic()-start;u=ctypes.windll.user32;windows=[]
+    elapsed=time.monotonic()-start;u=ctypes.windll.user32;windows=[];seen=[]
+    ImageGrab.grab().save(r/'Native_Windows32_Cockpit.jpg',quality=85,optimize=True)
     cbtype=ctypes.WINFUNCTYPE(wt.BOOL,wt.HWND,wt.LPARAM)
     def enum(h,p):
         title=ctypes.create_unicode_buffer(512);u.GetWindowTextW(h,title,512)
+        if title.value:seen.append({'title':title.value,'visible':bool(u.IsWindowVisible(h))})
         if 'YS' in title.value.upper() and 'FLIGHT' in title.value.upper() and u.IsWindowVisible(h):windows.append(h)
         return True
-    u.EnumWindows(cbtype(enum),0);assert windows,'Native game window absent';h=windows[0]
+    u.EnumWindows(cbtype(enum),0);print(json.dumps({'windows':seen}),flush=True);assert windows,'Native game window absent';h=windows[0]
     u.ShowWindow(h,9);u.SetWindowPos(h,0,0,0,1040,810,0x40);u.SetForegroundWindow(h)
     u.PostMessageW(h,0x100,0x13,0);u.PostMessageW(h,0x101,0x13,0);time.sleep(1)
     rect=wt.RECT();u.GetClientRect(h,ctypes.byref(rect));pt=wt.POINT(0,0);u.ClientToScreen(h,ctypes.byref(pt))
