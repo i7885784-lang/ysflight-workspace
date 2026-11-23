@@ -1,0 +1,27 @@
+name: Verify Su34 quick launcher on native Windows
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  native-test:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install Pillow
+      - name: Test actual 32-bit game and finalize launcher ZIP
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python import-test-delivery/verify_windows.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-su34-launch-evidence
+          path: |
+            native-check/native-game.log
+            native-check/Native_Windows32_Cockpit.jpg
+            native-check/Native_Windows32_Validation.json
