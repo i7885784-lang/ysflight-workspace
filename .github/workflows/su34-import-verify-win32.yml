@@ -25,3 +25,11 @@ jobs:
             native-check/native-game.log
             native-check/Native_Windows32_Cockpit.jpg
             native-check/Native_Windows32_Validation.json
+      - name: Preserve native window evidence in draft
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if (Test-Path native-check/Native_Windows32_Cockpit.jpg) {
+            gh release upload su34-import-quicktest-x86-20261123 native-check/Native_Windows32_Cockpit.jpg --repo i7885784-lang/ysflight-workspace --clobber
+          }

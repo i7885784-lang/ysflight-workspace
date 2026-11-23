@@ -14,7 +14,7 @@ m=json.loads((r/'original-manifest.json').read_text());assert sha(r/'original-ga
 batch=b'@echo off\r\ncd /d "%~dp0runtime"\r\n"%CD%\\ysflight32_gl1.exe" -userdir "%~dp0user" -configdir "%CD%\\config" -script Start_Su34_Import.script\r\n'
 with zipfile.ZipFile(r/'original-game.zip') as z:assert z.testzip() is None;z.extractall(r/'test')
 (r/'test/PLAY_SU34.bat').write_bytes(batch)
-download_url='https://github.com/pal1000/mesa-dist-win/releases/download/26.3.0/mesa3d-26.3.0-release-mingw.7z'
+download_url='https://github.com/pal1000/mesa-dist-win/releases/download/26.3.0/mesa3d-26.3.0-release-msvc.7z'
 run(['curl.exe','-L','--fail',download_url,'-o',r/'mesa.7z']);run(['7z','x',r/'mesa.7z','-o'+str(r/'mesa')],stdout=subprocess.DEVNULL)
 candidates=[p for p in (r/'mesa').rglob('opengl32.dll') if 'x86' in p.parts or '32' in p.parts]
 assert len(candidates)==1,[str(p) for p in (r/'mesa').rglob('opengl32.dll')]
@@ -45,7 +45,7 @@ try:
     u.PostMessageW(h,0x100,0x13,0);u.PostMessageW(h,0x101,0x13,0);time.sleep(1)
     rect=wt.RECT();u.GetClientRect(h,ctypes.byref(rect));pt=wt.POINT(0,0);u.ClientToScreen(h,ctypes.byref(pt))
     ImageGrab.grab(bbox=(pt.x,pt.y,pt.x+rect.right,pt.y+rect.bottom)).save(r/'Native_Windows32_Cockpit.jpg',quality=85,optimize=True)
-    validation={'native_windows':True,'host':'Windows GitHub runner','executable':'actual shipped PE32 i386','actual_root_batch':True,'mesh_triangles':579601,'mesh_materials':15,'mesh_textures':42,'import_logged':import_logged,'native_window_captured_for_visual_review':True,'startup_or_observation_seconds':round(elapsed,2),'driver':'Mesa26.3 llvmpipe for CI only; NOT bundled','eye':[-.49,1.,7.56],'exe_sha256':sha(rt/'ysflight32_gl1.exe')}
+    validation={'native_windows':True,'host':'Windows GitHub runner','executable':'actual shipped PE32 i386','actual_root_batch':True,'mesh_triangles':579601,'mesh_materials':15,'mesh_textures':42,'import_logged':import_logged,'native_window_captured_for_visual_review':True,'startup_or_observation_seconds':round(elapsed,2),'driver':'Mesa26.3 MSVC x86 llvmpipe for CI only; NOT bundled','eye':[-.49,1.,7.56],'exe_sha256':sha(rt/'ysflight32_gl1.exe')}
     assert validation['exe_sha256']==m['exe_sha256']
 finally:
     run(['taskkill','/F','/IM','ysflight32_gl1.exe'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL);proc.wait(timeout=15);f.close()
