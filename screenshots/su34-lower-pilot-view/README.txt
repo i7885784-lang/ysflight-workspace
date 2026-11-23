@@ -1,0 +1,3 @@
+Real game screenshots. Eyes lowered12cm and moved backward18cm from prior camera; normal cockpit pitch -8deg unchanged; second panel screenshot uses -18deg pitch only for inspection. Geometry, textures, zoom and renderer unchanged. No game ZIP, animation or clickable buttons delivered.
+Model: Russian Su-34 35 Red by42manako https://sketchfab.com/3d-models/russian-su-34-35-red-4d11c7ff85c74c7a91d623d1c0c40594 ; page indicates CC BY4.0. No original model files included.
+Visual reference: Igor Kolokolov Su34 cockpit photo album https://igor113.livejournal.com/1706970.html (early airframe01-06; exact serial-aircraft layouts may differ). Reference photographs are linked only, not redistributed.

@@ -1,0 +1,108 @@
+{
+  "source_objects": 345,
+  "cockpit": [
+    {
+      "name": "vehicle#cockpit_238",
+      "triangles": 50667,
+      "materials": [
+        "837f7335-04f8-4153-9190-554e762e3b26",
+        "d239bf56-e178-4d06-946a-135a6357cdee"
+      ]
+    }
+  ],
+  "seats": [
+    {
+      "name": "vehicle#seat_01_208",
+      "triangles": 4491,
+      "materials": [
+        "21483209-4f33-460b-9d95-e28d7abf833b"
+      ]
+    },
+    {
+      "name": "vehicle#seat_02_209",
+      "triangles": 4491,
+      "materials": [
+        "21483209-4f33-460b-9d95-e28d7abf833b"
+      ]
+    }
+  ],
+  "gear_objects": 85,
+  "wheel_objects": [
+    {
+      "name": "vehicle#wheel_c_259",
+      "triangles": 20304,
+      "materials": [
+        "3b36b2c1-c955-4119-ab5b-de4df4b5e3ae"
+      ]
+    },
+    {
+      "name": "vehicle#wheel_l_286",
+      "triangles": 9108,
+      "materials": [
+        "3b36b2c1-c955-4119-ab5b-de4df4b5e3ae"
+      ]
+    },
+    {
+      "name": "vehicle#wheel1_l_287",
+      "triangles": 9108,
+      "materials": [
+        "3b36b2c1-c955-4119-ab5b-de4df4b5e3ae"
+      ]
+    },
+    {
+      "name": "vehicle#wheel_r_322",
+      "triangles": 9108,
+      "materials": [
+        "3b36b2c1-c955-4119-ab5b-de4df4b5e3ae"
+      ]
+    },
+    {
+      "name": "vehicle#wheel1_r_323",
+      "triangles": 9108,
+      "materials": [
+        "3b36b2c1-c955-4119-ab5b-de4df4b5e3ae"
+      ]
+    }
+  ],
+  "named_door_objects": [
+    {
+      "name": "vehicle#door1_0",
+      "triangles": 994,
+      "materials": [
+        "837f7335-04f8-4153-9190-554e762e3b26"
+      ]
+    },
+    {
+      "name": "vehicle#door2_8",
+      "triangles": 476,
+      "materials": [
+        "837f7335-04f8-4153-9190-554e762e3b26"
+      ]
+    }
+  ],
+  "named_per_button_objects": [],
+  "runtime": "static indexed mesh batched by 15 materials; source object IDs, parent hierarchy, pivots and animation not exported",
+  "buttons": "some detail is textured and some geometry can exist within the combined cockpit; no independent per-button IDs or click actions in current runtime",
+  "animation": "OBJ contains no animation or pivot hierarchy; gear parts exist but require rigging and door mapping before animation",
+  "reference": "https://igor113.livejournal.com/1706970.html",
+  "reference_caveat": "photographed aircraft 01-06 is an early/pre-series airframe; it cannot establish exact serial-aircraft button labels/positions",
+  "camera": {
+    "before_eye": [
+      -0.49,
+      1.12,
+      7.6
+    ],
+    "after_eye": [
+      -0.49,
+      1.0,
+      7.42
+    ],
+    "delta_m": [
+      0,
+      -0.12,
+      -0.18
+    ],
+    "geometry_unchanged": true,
+    "zoom": 0.85
+  }
+}
