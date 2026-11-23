@@ -7,7 +7,9 @@ def run(a,**kw):return subprocess.run(list(map(str,a)),check=True,**kw)
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def download(asset,p):
     with p.open('wb') as f:run(['gh','api',f'repos/{repo}/releases/assets/{asset}','-H','Accept: application/octet-stream'],stdout=f)
-download(781543432,r/'original-game.zip');download(781543427,r/'original-sources.zip');download(781543426,r/'original-manifest.json')
+release=json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/releases/454987447'],text=True));assert release['draft']
+assets={a['name']:a['id'] for a in release['assets']}
+download(assets['Su34_QuickTest_Windows_32bit.zip'],r/'original-game.zip');download(assets['Su34_QuickTest_CorrespondingSources.zip'],r/'original-sources.zip');download(assets['manifest.json'],r/'original-manifest.json')
 m=json.loads((r/'original-manifest.json').read_text());assert sha(r/'original-game.zip')==m['game_sha256'];assert sha(r/'original-sources.zip')==m['sources_sha256']
 batch=b'@echo off\r\ncd /d "%~dp0runtime"\r\n"%CD%\\ysflight32_gl1.exe" -userdir "%~dp0user" -configdir "%CD%\\config" -script Start_Su34_Import.script\r\n'
 with zipfile.ZipFile(r/'original-game.zip') as z:assert z.testzip() is None;z.extractall(r/'test')
@@ -50,7 +52,8 @@ with zipfile.ZipFile(game) as z:
     assert z.testzip() is None;assert not any('opengl32.dll' in n.lower() for n in z.namelist());assert not any(n.startswith('user/') for n in z.namelist())
 sources=r/'Su34_QuickTest_CorrespondingSources.zip'
 with zipfile.ZipFile(r/'original-sources.zip') as src,zipfile.ZipFile(sources,'w',zipfile.ZIP_DEFLATED,6) as dst:
-    for n in src.namelist():dst.writestr(n,(code/'deliver_quick.py').read_bytes() if n=='import-test-delivery/deliver_quick.py' else src.read(n))
+    for n in src.namelist():
+        if n!='import-test-delivery/verify_windows.py':dst.writestr(n,(code/'deliver_quick.py').read_bytes() if n=='import-test-delivery/deliver_quick.py' else src.read(n))
     dst.write(__file__,'import-test-delivery/verify_windows.py')
 m.update(game_sha256=sha(game),sources_sha256=sha(sources),native_windows_test=validation)
 (r/'manifest.json').write_text(json.dumps(m,indent=2));(r/'Native_Windows32_Validation.json').write_text(json.dumps(validation,indent=2))
