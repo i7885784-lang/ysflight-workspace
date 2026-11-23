@@ -1,0 +1,31 @@
+name: Build Su34 single-aircraft 32-bit quick test
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y g++-mingw-w64-i686-posix cmake
+          pip install numpy Pillow
+      - name: Restore inputs and apply reviewed import source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python import-test-delivery/deliver_quick.py prepare
+      - name: Build Windows 32-bit OpenGL executable
+        run: |
+          cmake -S su34-quick-build/engine/YSFLIGHT/src -B su34-quick-build/build32 -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/su34-quick-build/engine/mingw32.cmake -DCMAKE_BUILD_TYPE=Release '-DCMAKE_CXX_FLAGS=-DV861_VALIDATION -DWIN32 -D_WINDOWS -DNOMINMAX -fpermissive -fno-delete-null-pointer-checks' '-DCMAKE_C_FLAGS=-Wno-error=incompatible-pointer-types' '-DCMAKE_EXE_LINKER_FLAGS=-static -static-libgcc -static-libstdc++ -mwindows'
+          mkdir -p su34-quick-build/build32/main/plugin
+          cmake --build su34-quick-build/build32 --target ysflight32_gl1 -j2
+      - name: Package and upload to authenticated draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python import-test-delivery/deliver_quick.py package

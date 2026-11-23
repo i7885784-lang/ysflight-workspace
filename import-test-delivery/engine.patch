@@ -1,0 +1,247 @@
+--- a/YSFLIGHT/src/CMakeLists.txt
++++ b/YSFLIGHT/src/CMakeLists.txt
+@@ -1,5 +1,6 @@
+ cmake_minimum_required(VERSION 3.2)
+ project(YSFLIGHT)
++
+ if(MINGW)
+     set(CMAKE_CXX_LINK_EXECUTABLE "<CMAKE_CXX_COMPILER> <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> -Wl,--start-group <LINK_LIBRARIES> -Wl,--end-group")
+ endif()
+@@ -84,3 +85,7 @@
+ add_subdirectory(main)
+ add_subdirectory(main_consvr)
+ add_subdirectory(main_demoOnly)
++
++if(MINGW)
++  set_property(TARGET fssimplewindow APPEND PROPERTY INTERFACE_LINK_LIBRARIES imm32)
++endif()
+--- a/YSFLIGHT/src/graphics/common/fsvisual.h
++++ b/YSFLIGHT/src/graphics/common/fsvisual.h
+@@ -3,6 +3,10 @@
+ /* { */
+ 
+ #include <ysvisual.h>
++
++// Optional backend extension for the isolated, textured OBJ preservation test.
++typedef bool (*FsImportedDrawFunction)(const YsMatrix4x4 &,const YsMatrix4x4 &,const YsVec3 &,const YsAtt3 &,unsigned int);
++extern FsImportedDrawFunction FsImportedDraw;
+ 
+ 
+ const unsigned int FSVISUAL_DRAWOPAQUE=YsVisual::DRAWOPAQUE;
+--- a/YSFLIGHT/src/graphics/common/fsvisual.cpp
++++ b/YSFLIGHT/src/graphics/common/fsvisual.cpp
+@@ -5,6 +5,8 @@
+ #include <ysshellext_orientationutil.h>
+ 
+ #include "fsvisual.h"
++
++FsImportedDrawFunction FsImportedDraw=nullptr;
+ 
+ 
+ FsVisualSrf::FsVisualSrf(const FsVisualSrf &incoming)
+--- a/YSFLIGHT/src/core/fsexistence.cpp
++++ b/YSFLIGHT/src/core/fsexistence.cpp
+@@ -1348,6 +1348,11 @@
+     unsigned int drawFlag,
+     const double &ctime) const
+ {
++	if(0==strcmp(prop.GetIdentifier(),"SU-34_IMPORT_TEST") && nullptr!=FsImportedDraw &&
++	   FsImportedDraw(viewTfm,projMat,GetPosition(),GetAttitude(),drawFlag))
++	{
++		return;
++	}
+ 	if(levelOfDetail>=1 && lod!=nullptr && (prop.GetAfterBurner()!=YSTRUE || lod.HasAfterburnerGeometry()))
+ 	{
+ 		prop.SetupVisual(lod);
+@@ -1371,6 +1376,9 @@
+ void FsAirplane::DrawShadow
+     (const YsMatrix4x4 &viewTfm,const YsMatrix4x4 &projTfm,const YsMatrix4x4 &projPlnTfm) const
+ {
++	// The fallback diagnostic cube must never cast a false aircraft shadow.
++	// Textured-import shadow integration is outside this static preservation test.
++	if(0==strcmp(prop.GetIdentifier(),"SU-34_IMPORT_TEST"))return;
+ 	if(vis!=nullptr)
+ 	{
+ 		vis.DrawShadow(viewTfm,projTfm,GetPosition(),GetAttitude(),projPlnTfm);
+--- a/YSFLIGHT/src/core/fssimulation.cpp
++++ b/YSFLIGHT/src/core/fssimulation.cpp
+@@ -7247,7 +7247,11 @@
+ 		    actualViewMode.actualViewMode==FSADDITIONALAIRPLANEVIEW_CABIN) &&
+ 		   IsPlayerAirplane(seeker)==YSTRUE)
+ 		{
+-			if(seeker->cockpit!=nullptr)
++			if(0==strcmp(seeker->Prop().GetIdentifier(),"SU-34_IMPORT_TEST") && nullptr!=FsImportedDraw &&
++			   FsImportedDraw(actualViewMode.viewMat,proj.GetMatrix(),seeker->GetPosition(),seeker->GetAttitude(),drawFlag))
++			{
++			}
++			else if(seeker->cockpit!=nullptr)
+ 			{
+ 				if(Su27Cockpit(seeker)){seeker->cockpit.SetState(100,0,1,seeker->Prop().su27Canopy);seeker->cockpit.SetState(120,0,1,seeker->Prop().GetThrottle());seeker->cockpit.SetPitch(122,seeker->Prop().GetElevator()*YsDegToRad(12.0));seeker->cockpit.SetRotation(123,-seeker->Prop().GetAileron()*YsDegToRad(12.0));}
+                 if(0==strcmp(seeker->Prop().GetIdentifier(),"SU-30SM_CUSTOM"))seeker->cockpit.SetState(211,0,1,seeker->Prop().su27Canopy);
+--- a/YSFLIGHT/src/graphics/gl/CMakeLists.txt
++++ b/YSFLIGHT/src/graphics/gl/CMakeLists.txt
+@@ -7,6 +7,7 @@
+ set(LIB_DEPENDENCY ysglcpp ysglcpp_gl1 geblkernel geblgl geblgl_gl1 ysflight_common ysflight_core ysflight_graphics_common ysclass fssimplewindow ysbitmap fsguilib ysbitmapfont ysfontrenderer yssystemfont ystexturemanager_gl ystexturemanager ysscenery_dnm ysjoystick ysjoycalibdlg_gl1)
+ 
+ set(SRCS
++fsimportgl.cpp
+ fsblackoutgl.cpp
+ fscloudgl.cpp
+ fsexistencegl.cpp
+--- a/YSFLIGHT/src/graphics/gl/fsopengl.cpp
++++ b/YSFLIGHT/src/graphics/gl/fsopengl.cpp
+@@ -118,8 +118,10 @@
+ 
+ double fsOpenGLVersion=1.0;
+ 
++extern bool FsDrawImportedGl(const YsMatrix4x4 &,const YsMatrix4x4 &,const YsVec3 &,const YsAtt3 &,unsigned int);
+ void FsInitializeOpenGL(void)
+ {
++	FsImportedDraw=FsDrawImportedGl;
+ 	const char *verStr=(const char *)glGetString(GL_VERSION);
+ 	if(NULL!=verStr)
+ 	{
+--- /dev/null
++++ b/YSFLIGHT/src/graphics/gl/fsimportgl.cpp
+@@ -0,0 +1,141 @@
++// Isolated OBJ preservation renderer. Other aircraft retain their existing path.
++#include <ysclass.h>
++#define FSSIMPLEWINDOW_DONT_INCLUDE_OPENGL_HEADERS
++#include <fssimplewindow.h>
++#include <ysbitmap.h>
++#include "graphics/common/fsvisual.h"
++#ifdef _WIN32
++#include <windows.h>
++#endif
++#include <GL/gl.h>
++#include <GL/glu.h>
++#include <GL/glext.h>
++#include <fstream>
++#include <vector>
++#include <string>
++#include <map>
++#include <cstdio>
++#include <cstdint>
++#include <cmath>
++
++namespace {
++#define GLPROC(type,name) static type p##name=nullptr
++GLPROC(PFNGLCREATESHADERPROC,CreateShader);GLPROC(PFNGLSHADERSOURCEPROC,ShaderSource);
++GLPROC(PFNGLCOMPILESHADERPROC,CompileShader);GLPROC(PFNGLGETSHADERIVPROC,GetShaderiv);
++GLPROC(PFNGLGETSHADERINFOLOGPROC,GetShaderInfoLog);GLPROC(PFNGLCREATEPROGRAMPROC,CreateProgram);
++GLPROC(PFNGLATTACHSHADERPROC,AttachShader);GLPROC(PFNGLLINKPROGRAMPROC,LinkProgram);
++GLPROC(PFNGLGETPROGRAMIVPROC,GetProgramiv);GLPROC(PFNGLUSEPROGRAMPROC,UseProgram);
++GLPROC(PFNGLGETUNIFORMLOCATIONPROC,GetUniformLocation);GLPROC(PFNGLUNIFORM1IPROC,Uniform1i);
++GLPROC(PFNGLUNIFORM1FPROC,Uniform1f);GLPROC(PFNGLUNIFORM3FPROC,Uniform3f);
++GLPROC(PFNGLACTIVETEXTUREPROC,ActiveTexture);GLPROC(PFNGLCLIENTACTIVETEXTUREPROC,ClientActiveTexture);
++GLPROC(PFNGLGENBUFFERSPROC,GenBuffers);GLPROC(PFNGLBINDBUFFERPROC,BindBuffer);GLPROC(PFNGLBUFFERDATAPROC,BufferData);
++static const char *base="aircraft/su34_import/";
++struct Vertex {float p[3],n[3],uv[2];};
++static_assert(sizeof(Vertex)==32,"Indexed mesh vertex format must remain exact");
++struct Material {unsigned count,offset;float alpha,kd[3];GLuint tex[5];};
++static std::vector<Material> materials;static GLuint program=0,vbo=0,ibo=0;
++static bool attempted=false,ready=false;static std::map<std::string,GLuint> textures;
++static GLint loc(const char *name){return pGetUniformLocation(program,name);}
++static GLuint texture(const std::string &name)
++{
++ if(name=="-")return 0;
++ auto found=textures.find(name);if(found!=textures.end())return found->second;
++ YsBitmap bmp;std::string path=std::string(base)+name;
++ if(YSOK!=bmp.LoadPng(path.c_str())){printf("IMPORT texture failed %s\n",path.c_str());return 0;}
++ // YsBitmap PNG decoder stores rows bottom-up, matching OpenGL texture V.
++ GLint limit=0;glGetIntegerv(GL_MAX_TEXTURE_SIZE,&limit);
++ if(bmp.GetWidth()>limit || bmp.GetHeight()>limit){printf("IMPORT original texture exceeds GPU limit: %s (%dx%d, limit %d); no silent downsampling\n",name.c_str(),bmp.GetWidth(),bmp.GetHeight(),limit);return 0;}
++ GLuint id;glGenTextures(1,&id);glBindTexture(GL_TEXTURE_2D,id);
++ glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
++ glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
++ glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
++ if(0!=gluBuild2DMipmaps(GL_TEXTURE_2D,GL_RGBA,bmp.GetWidth(),bmp.GetHeight(),GL_RGBA,GL_UNSIGNED_BYTE,bmp.GetRGBABitmapPointer())){glDeleteTextures(1,&id);return 0;}
++ textures[name]=id;return id;
++}
++static GLuint shader(GLenum type,const char *src)
++{
++ GLuint id=pCreateShader(type);pShaderSource(id,1,&src,nullptr);pCompileShader(id);
++ GLint ok=0;pGetShaderiv(id,GL_COMPILE_STATUS,&ok);
++ if(!ok){char log[4096];pGetShaderInfoLog(id,sizeof(log),nullptr,log);printf("IMPORT shader error %s\n",log);return 0;}
++ return id;
++}
++static bool load()
++{
++#ifdef _WIN32
++#define LOAD(name) p##name=(decltype(p##name))wglGetProcAddress("gl" #name);if(!p##name){printf("IMPORT OpenGL function missing: %s\n",#name);return false;}
++ LOAD(CreateShader);LOAD(ShaderSource);LOAD(CompileShader);LOAD(GetShaderiv);LOAD(GetShaderInfoLog);LOAD(CreateProgram);LOAD(AttachShader);LOAD(LinkProgram);LOAD(GetProgramiv);LOAD(UseProgram);LOAD(GetUniformLocation);LOAD(Uniform1i);LOAD(Uniform1f);LOAD(Uniform3f);LOAD(ActiveTexture);LOAD(ClientActiveTexture);LOAD(GenBuffers);LOAD(BindBuffer);LOAD(BufferData);
++#undef LOAD
++#else
++ return false;
++#endif
++ const char *vs=R"GLSL(#version 120
++ varying vec3 eyePosition;varying vec3 normal;varying vec2 uv;
++ void main(){vec4 p=gl_ModelViewMatrix*gl_Vertex;eyePosition=p.xyz;normal=gl_NormalMatrix*gl_Normal;uv=gl_MultiTexCoord0.xy;gl_Position=gl_ProjectionMatrix*p;}
++ )GLSL";
++ const char *fs=R"GLSL(#version 120
++ varying vec3 eyePosition;varying vec3 normal;varying vec2 uv;
++ uniform sampler2D diffuseMap,normalMap,specularMap,aoMap,alphaMap;
++ uniform bool hasDiffuse,hasNormal,hasSpecular,hasAo,hasAlpha;
++ uniform vec3 kd;uniform float opacity;
++ vec3 srgbToLinear(vec3 c){return mix(c/12.92,pow((c+0.055)/1.055,vec3(2.4)),step(vec3(0.04045),c));}
++ vec3 linearToSrgb(vec3 c){c=max(c,vec3(0.0));return mix(c*12.92,1.055*pow(c,vec3(1.0/2.4))-0.055,step(vec3(0.0031308),c));}
++ void main(){
++ vec4 color=hasDiffuse?texture2D(diffuseMap,uv):vec4(kd,1.0);
++ float a=color.a*opacity;if(hasAlpha)a*=texture2D(alphaMap,uv).r;if(a<0.025)discard;
++ vec3 N=normalize(normal);if(!gl_FrontFacing)N=-N;
++ if(hasNormal){
++ vec3 dp1=dFdx(eyePosition),dp2=dFdy(eyePosition);vec2 dt1=dFdx(uv),dt2=dFdy(uv);
++ vec3 p2=cross(dp2,N),p1=cross(N,dp1);vec3 T=p2*dt1.x+p1*dt2.x,B=p2*dt1.y+p1*dt2.y;
++ float len=max(dot(T,T),dot(B,B));if(len>0.00000001){float inv=inversesqrt(len);vec3 bump=texture2D(normalMap,uv).xyz*2.0-1.0;N=normalize(mat3(T*inv,B*inv,N)*bump);}}
++ vec3 L=normalize(gl_LightSource[0].position.xyz);float light=0.40+0.60*max(dot(N,L),0.0);
++ float ao=hasAo?texture2D(aoMap,uv).r:1.0;float spec=hasSpecular?texture2D(specularMap,uv).r:0.0;
++ vec3 H=normalize(L+normalize(-eyePosition));float shine=pow(max(dot(N,H),0.0),32.0)*spec*0.18;
++ gl_FragColor=vec4(linearToSrgb(srgbToLinear(color.rgb)*light*(0.55+0.45*ao)+vec3(shine)),a);
++ }
++ )GLSL";
++ GLuint vsId=shader(GL_VERTEX_SHADER,vs),fsId=shader(GL_FRAGMENT_SHADER,fs);if(!vsId||!fsId)return false;
++ program=pCreateProgram();pAttachShader(program,vsId);pAttachShader(program,fsId);pLinkProgram(program);
++ GLint ok;pGetProgramiv(program,GL_LINK_STATUS,&ok);if(!ok){printf("IMPORT shader link failed\n");return false;}
++ std::ifstream in(std::string(base)+"aircraft.mesh",std::ios::binary);char magic[8];uint32_t nv=0,ni=0;
++ in.read(magic,8);in.read((char*)&nv,4);in.read((char*)&ni,4);
++ if(!in || std::string(magic,8)!="YSOBJ001" || nv>2000000 || ni>10000000)return false;
++ std::vector<Vertex> vertices(nv);std::vector<uint32_t> indices(ni);
++ in.read((char*)vertices.data(),vertices.size()*sizeof(Vertex));in.read((char*)indices.data(),indices.size()*4);if(!in)return false;
++ for(auto index:indices)if(index>=nv)return false;
++ std::ifstream info(std::string(base)+"aircraft.materials");unsigned nm;info>>nm;if(!info||nm>256)return false;
++ materials.resize(nm);size_t sum=0;
++ for(auto &m:materials){info>>m.count>>m.offset>>m.alpha>>m.kd[0]>>m.kd[1]>>m.kd[2];if(m.offset+m.count>ni)return false;sum+=m.count;for(int i=0;i<5;++i){std::string path;info>>path;m.tex[i]=texture(path);if(path!="-"&&!m.tex[i])return false;}}
++ if(!info||sum!=ni)return false;
++ pGenBuffers(1,&vbo);pBindBuffer(GL_ARRAY_BUFFER,vbo);pBufferData(GL_ARRAY_BUFFER,vertices.size()*sizeof(Vertex),vertices.data(),GL_STATIC_DRAW);
++ pGenBuffers(1,&ibo);pBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ibo);pBufferData(GL_ELEMENT_ARRAY_BUFFER,indices.size()*4,indices.data(),GL_STATIC_DRAW);
++ pBindBuffer(GL_ARRAY_BUFFER,0);pBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
++ printf("IMPORT READY vertices=%u triangles=%u materials=%u textures=%u; static pose\n",nv,ni/3,nm,(unsigned)textures.size());fflush(stdout);return true;
++}
++}
++
++bool FsDrawImportedGl(const YsMatrix4x4 &view,const YsMatrix4x4 &,const YsVec3 &pos,const YsAtt3 &att,unsigned flags)
++{
++ if(!attempted){attempted=true;GLint oldArray=0,oldElement=0;glGetIntegerv(GL_ARRAY_BUFFER_BINDING,&oldArray);glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,&oldElement);glPushAttrib(GL_ALL_ATTRIB_BITS);ready=load();glPopAttrib();if(pBindBuffer){pBindBuffer(GL_ARRAY_BUFFER,oldArray);pBindBuffer(GL_ELEMENT_ARRAY_BUFFER,oldElement);}if(!ready)printf("IMPORT FAILED: textured test model unavailable\n");}
++ if(!ready)return false;
++ GLint previousProgram=0,previousArray=0,previousElement=0,previousActive=0,previousClient=0,previousMatrix=0;
++ glGetIntegerv(GL_CURRENT_PROGRAM,&previousProgram);glGetIntegerv(GL_ARRAY_BUFFER_BINDING,&previousArray);glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING,&previousElement);glGetIntegerv(GL_ACTIVE_TEXTURE,&previousActive);glGetIntegerv(GL_CLIENT_ACTIVE_TEXTURE,&previousClient);glGetIntegerv(GL_MATRIX_MODE,&previousMatrix);
++ glPushAttrib(GL_ALL_ATTRIB_BITS);glPushClientAttrib(GL_CLIENT_VERTEX_ARRAY_BIT);
++ glMatrixMode(GL_MODELVIEW);glPushMatrix();glLoadIdentity();glScaled(1,1,-1);
++ YsMatrix4x4 model;model.Translate(pos);model.RotateXZ(att.h());model.RotateZY(att.p());model.RotateXY(att.b());YsMatrix4x4 mv=view*model;double matrix[16];mv.GetOpenGlCompatibleMatrix(matrix);glMultMatrixd(matrix);
++ // OBJ's right-handed, Y-up, nose+Z basis -> YSFlight's left-handed basis.
++ // Keep source vertices/UVs intact; transform positions AND normals together.
++ glScaled(-1,1,1);
++ glEnable(GL_DEPTH_TEST);glDepthFunc(GL_LEQUAL);glEnable(GL_CULL_FACE);glFrontFace(GL_CCW);
++ glDisable(GL_LIGHTING);glDisable(GL_ALPHA_TEST);pUseProgram(program);
++ pBindBuffer(GL_ARRAY_BUFFER,vbo);pBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ibo);
++ glEnableClientState(GL_VERTEX_ARRAY);glEnableClientState(GL_NORMAL_ARRAY);pClientActiveTexture(GL_TEXTURE0);glEnableClientState(GL_TEXTURE_COORD_ARRAY);
++ glVertexPointer(3,GL_FLOAT,sizeof(Vertex),(const void*)0);glNormalPointer(GL_FLOAT,sizeof(Vertex),(const void*)12);glTexCoordPointer(2,GL_FLOAT,sizeof(Vertex),(const void*)24);
++ const char *samplers[]={"diffuseMap","normalMap","specularMap","aoMap","alphaMap"};const char *has[]={"hasDiffuse","hasNormal","hasSpecular","hasAo","hasAlpha"};
++ for(auto &m:materials){bool transparent=m.alpha<0.999f;if(transparent?!(flags&FSVISUAL_DRAWTRANSPARENT):!(flags&FSVISUAL_DRAWOPAQUE))continue;
++  if(transparent){glEnable(GL_BLEND);glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);glDepthMask(GL_FALSE);}else{glDisable(GL_BLEND);glDepthMask(GL_TRUE);}
++  for(int i=0;i<5;++i){pActiveTexture(GL_TEXTURE0+i);glBindTexture(GL_TEXTURE_2D,m.tex[i]);pUniform1i(loc(samplers[i]),i);pUniform1i(loc(has[i]),m.tex[i]?1:0);}
++  pUniform1f(loc("opacity"),m.alpha);pUniform3f(loc("kd"),m.kd[0],m.kd[1],m.kd[2]);glDrawElements(GL_TRIANGLES,m.count,GL_UNSIGNED_INT,(const void*)(uintptr_t)(m.offset*4));
++ }
++ glPopMatrix();glMatrixMode(previousMatrix);pUseProgram(previousProgram);glPopClientAttrib();glPopAttrib();pBindBuffer(GL_ARRAY_BUFFER,previousArray);pBindBuffer(GL_ELEMENT_ARRAY_BUFFER,previousElement);pActiveTexture(previousActive);pClientActiveTexture(previousClient);
++ return true;
++}
