@@ -1,0 +1,12 @@
+{
+  "restored_checkpoint_patch_sha256": "17dc3da5ccb1df4967ee259d457cceaaaeba055cb9b8502cae047c0ff24076c3",
+  "triangles_loaded": 579601,
+  "materials_loaded": 15,
+  "textures_loaded": 42,
+  "status": "unfinished static import checkpoint; pictures only, no new model fixes",
+  "images": {
+    "cockpit.jpg": "aaedc9486a4f3f8418b827462a00fc8106ce90ea7731100234401cfea62abb00",
+    "exterior.jpg": "64d792ddc5a83118ab20c90a80f32755cbbd7bef415e087dd064ce099abc4342",
+    "rear.jpg": "cb2dc39c658f52b5d4a48fce9c515379421f25e6851d47c9010896aeb0238e0a"
+  }
+}
